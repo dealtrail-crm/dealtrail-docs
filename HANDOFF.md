@@ -193,7 +193,7 @@ claude --add-dir ../{프로젝트명}-api ../{프로젝트명}-web ../{프로젝
   - 종류를 라벨(`type:*`)로 표시하지 않는다.
 - **Label**
   - 영역: `area:web` / `area:api` / `area:infra` / `area:design`
-  - 우선순위: `priority:high` / `priority:medium` / `priority:low`
+  - 우선순위: `priority:high` / `priority:medium` / `priority:low`. PM이 정하고, 조정이 필요하면 사용자가 PM에게 요청한다.
   - 라벨은 레포 단위라 docs·api·web·infra 4개 레포에 같은 세트를 만든다.
 - **조직 단위 GitHub Projects 보드** 하나로 전 레포 이슈를 칸반(할 일 / 진행 중 / 리뷰 중 / 완료)으로 본다.
 
