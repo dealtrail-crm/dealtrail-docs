@@ -291,5 +291,11 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 
 ## 9. 다음 단계
 
-1. PRD 확정: 00·01·07 검토 완료. 남은 TBD는 `prd/99-decisions-tbd.md`의 TBD-3·4·5·7·8·10 (02·04·05·06 문서 검토와 함께 결정)
+1. PRD 확정 (진행 중, `prd/`는 미커밋). 00·01·07 검토 완료. 남은 순서:
+   1. `02-lead.md` 검토 → TBD-5(Lead 상태), TBD-7(전환 시 기존 Account 연결) 결정
+   2. `04-opportunity-pipeline.md` 검토 → TBD-3(단계·전이, 최우선), TBD-10(통화) 결정
+   3. `03-account-contact.md`, `05-activity.md`, `06-dashboard.md` 검토 → TBD-8(Activity 대상), TBD-4(수주율) 결정
+   4. TBD-3·5 확정 후 PM이 `01` §3.4.1 예시 데이터 분포와 `prd/seed/` 업종별 명세 작성
+   5. PRD 커밋
+   - 검토 방법: 기능 문서는 목적 → 유저 스토리 → 제외 범위 → 인수조건 순으로, `[BE]` 인수조건 위주로 읽는다. 사용자 피드백은 `feedback/`(git 제외)에 메모한다.
 2. PM이 Milestone `v0.1 MVP`, Epic(docs 레포)·작업 이슈 생성
