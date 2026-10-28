@@ -60,7 +60,7 @@
 | 영역 | 기술 |
 |---|---|
 | 프론트엔드 | Next.js |
-| 백엔드 | Java Spring (필요 시 NestJS 사용 가능) |
+| 백엔드 | Java Spring (필요 시 NestJS 사용 가능). **Spring Boot 4.1.2 / Java 21 / Gradle** (2026-10-28 확정, 3.5는 2026-06-30 OSS 지원 종료). group `com.dealtrail`, 패키지 `com.dealtrail.api` |
 | DB | PostgreSQL |
 | 배포 | AWS. **EKS 사용 안 함** (개인 프로젝트라 비용 문제) |
 
@@ -234,15 +234,15 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 - scope: `web` `api` `infra` `docs` `design`
 - 제목은 한국어 허용, 50자 이내, 마침표 없음.
 
-### 템플릿 (작성 필요)
+### 템플릿 (작성 완료, 2026-10-28)
 
-- **커밋 템플릿** `.gitmessage`: 제목 형식 / 본문(무엇을, 왜) / 꼬리말(Closes, BREAKING CHANGE) 가이드. 적용: `git config commit.template .gitmessage`
+- **커밋 템플릿** `.gitmessage`: **api 레포 루트**에만 둔다 (편집기로 커밋하는 건 사용자뿐, 에이전트는 `-m`이라 템플릿 미사용). 제목 형식·type 목록·본문(무엇을, 왜)·`Closes #`만 `#` 주석으로 둔 간소화 버전. 적용: 기기마다 api 레포에서 `git config commit.template .gitmessage` (전역 설정 아님)
 - **PR 템플릿**: 관련 이슈(Closes #) / 변경 내용 / 확인 방법 체크리스트 / 리뷰어에게(특히 봐줬으면 하는 부분)
 - **이슈 템플릿**
   - feature: 배경, 유저 스토리, 인수조건 체크리스트, 관련 문서 링크(PRD·디자인·API)
   - bug: 현상, 재현 절차, 기대 동작, 환경
   - task: 작업 내용, 완료 조건 (chore·인프라·문서용)
-- 이슈/PR 템플릿은 `.github` 레포에 두어 전 레포에 공용 적용.
+- 이슈/PR 템플릿은 `.github` 레포에 두어 전 레포에 공용 적용. Markdown 템플릿 + frontmatter `type:`으로 Issue type 자동 지정 (실제 동작은 PM 첫 이슈에서 확인). 빈 이슈 막기(`config.yml`)는 하지 않음.
 
 ## 6. 기술 결정·문제 해결 기록
 
@@ -288,11 +288,11 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 
 프로젝트명을 PM 에이전트에게 받으려면 에이전트가 먼저 있어야 하므로, docs 폴더를 임시 이름으로 로컬에서 시작한다.
 
-1. 로컬에 임시 docs 폴더(예: `workspace/crm-docs`)를 만들고 이 문서를 넣은 뒤 `git init`
-2. CLAUDE.md, `.claude/agents/` 정의 파일 작성 (이 문서 기준, 작성 전 사용자 확인)
-3. PM 에이전트에게 프로젝트명 후보 요청 → 사용자 결정
-4. Organization과 레포 5개 생성, 로컬 폴더 이름을 `{프로젝트명}-docs`로 바꾸고 push
-5. GitHub MCP 연결 확인 (4장의 세팅 시 확인 항목 포함)
-6. `.github` 레포에 공용 템플릿, api 레포에 ADR·트러블슈팅 템플릿 작성
+1. ~~로컬에 임시 docs 폴더(예: `workspace/crm-docs`)를 만들고 이 문서를 넣은 뒤 `git init`~~ ✅
+2. ~~CLAUDE.md, `.claude/agents/` 정의 파일 작성 (이 문서 기준, 작성 전 사용자 확인)~~ ✅
+3. ~~PM 에이전트에게 프로젝트명 후보 요청 → 사용자 결정~~ ✅
+4. ~~Organization과 레포 5개 생성, 로컬 폴더 이름을 `{프로젝트명}-docs`로 바꾸고 push~~ ✅
+5. ~~GitHub MCP 연결 확인 (4장의 세팅 시 확인 항목 포함)~~ ✅
+6. ~~`.github` 레포에 공용 템플릿, api 레포에 ADR·트러블슈팅 템플릿 작성~~ ✅
 7. 첫 ADR: "레포를 이렇게 나눈 이유"
 8. PM 에이전트로 PRD 작성 시작 (체험 업종 목록·예시 데이터 제안 포함)
