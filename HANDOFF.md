@@ -11,7 +11,7 @@
 - **목적**: 포트폴리오. 평가 대상은 사용자의 **백엔드 역량과 기술적 의사결정·문제 해결 능력**.
 - **형태**: Claude Code 서브에이전트(PM, 디자이너, 프론트엔드, 인프라, 시니어 백엔드 리뷰어)와 협업. 사용자는 백엔드 개발 담당.
 - **도메인**: 범용 B2B 영업 CRM (미니 CRM). 아래 "도메인 상세" 참고
-- **프로젝트명**: `dealtrail` (deal + trail, 영업 건이 단계를 거쳐 남긴 이력). PM 후보 중 사용자가 결정
+- **프로젝트명**: `dealtrail` (deal + trail, 영업 건이 단계를 거쳐 남긴 이력).
 - **에이전트 산출물 범위**: 문서뿐 아니라 실제 코드까지 작성
 - **핵심 원칙**: 기술적 화려함보다 **방문자가 사이트에 들어오자마자 직접 써볼 수 있는 것**
 
@@ -60,7 +60,7 @@
 | 영역 | 기술 |
 |---|---|
 | 프론트엔드 | Next.js |
-| 백엔드 | Java Spring (필요 시 NestJS 사용 가능). **Spring Boot 4.1.2 / Java 21 / Gradle** (2026-10-28 확정, 3.5는 2026-06-30 OSS 지원 종료). group `com.dealtrail`, 패키지 `com.dealtrail.api` |
+| 백엔드 | Java Spring (필요 시 NestJS 사용 가능). **Spring Boot 4.1.2 / Java 21 / Gradle**. group `com.dealtrail`, 패키지 `com.dealtrail.api` |
 | DB | PostgreSQL |
 | 배포 | AWS. **EKS 사용 안 함** (개인 프로젝트라 비용 문제) |
 
@@ -69,7 +69,7 @@
 - 이 프로젝트에서 사용자는 **AWS와 Terraform을 잘 모르는 사람**으로 가정한다.
 - 어려운 기술은 쓰지 않는다. 쿠버네티스는 쉽고 비용이 들지 않는 경우에만 고려하고, 아니면 EC2 또는 ECS 수준으로 간단히 간다.
 - 현재 의견: 운영 난이도 때문에 쿠버네티스(k3s 포함)는 제외하는 쪽이 낫다. 비용상 "EC2 한 대 + Docker Compose"가 가장 저렴·단순하고, ECS(Fargate)는 관리가 편하지만 로드밸런서 등 월 고정비가 생긴다.
-- **최종 선택은 인프라 에이전트가 비용 비교표와 함께 제안하고 사용자가 결정한다.** (미결정)
+- **최종 선택은 인프라 에이전트가 비용 비교표와 함께 제안하고 사용자가 결정한다.**
 
 ## 2. 에이전트 구성과 역할
 
@@ -119,13 +119,13 @@
 
 - api 레포의 git은 **사용자가 직접 관리**한다. 에이전트는 api 레포에 커밋하지 않는다.
 - senior-backend: 읽기 + PR 코멘트. 사용자가 요청하면 구현 중인 코드에 대해 개선 코드를 작성할 수 있다 (커밋은 사용자가 한다).
-- 도구 권한: pm·senior-backend 모두 Edit/Write를 열어 둔다. "pm은 코드를 작성하지 않는다"는 에이전트 정의 파일의 정책으로만 둔다 (2026-10-28).
+- 도구 권한: pm·senior-backend 모두 Edit/Write를 열어 둔다. "pm은 코드를 작성하지 않는다"는 에이전트 정의 파일의 정책으로만 둔다.
 - frontend: 백엔드에 문제가 있을 때만 api 코드에 접근할 수 있고, **코드를 수정하지 않고 원인을 분석해 이슈만 생성**한다.
 - 그 외 에이전트는 api 레포에 접근하지 않는다.
 
 ## 3. 레포 구성
 
-GitHub **Organization**(무료)을 새로 만들고 아래 레포를 둔다. (Organization 이름은 도메인 확정 후 결정)
+GitHub **Organization** `dealtrail-crm`(무료)에 아래 레포를 둔다.
 
 ```
 Organization
@@ -172,10 +172,10 @@ cd workspace/{프로젝트명}-docs
 claude --add-dir ../{프로젝트명}-api ../{프로젝트명}-web ../{프로젝트명}-infra
 ```
 
-- 에이전트 커밋 권한: docs / web / infra / .github 만. `.github` 레포(공용 이슈·PR 템플릿)는 pm이 작성·커밋 (2026-10-28 추가).
-- api 레포의 ADR·트러블슈팅 **템플릿**(틀)은 senior-backend가 초안을 만들고 사용자가 검토·커밋한다. 기록 본문은 6장의 문답 방식을 따른다 (2026-10-28).
-- 에이전트 커밋·PR에 `Co-Authored-By` 꼬리말이나 AI 작성 문구를 붙이지 않는다. Claude Code는 기본으로 붙이므로 docs 레포 `.claude/settings.json`의 `attribution` 설정으로 끈다. → `"attribution": false`로 적용 (v2.1.281 이상 필요, Windows·macOS 모두 최신 버전 사용 중. 2026-10-28)
-- ~~api 레포 `main`에는 브랜치 보호(PR 필수)를 건다.~~ → 걸지 않기로 결정 (2026-10-28). 작업자가 사용자 한 명뿐이고 실제 프로덕트가 아니므로 PR 머지는 규칙으로만 지킨다.
+- 에이전트 커밋 권한: docs / web / infra / .github 만. `.github` 레포(공용 이슈·PR 템플릿)는 pm이 작성·커밋.
+- api 레포의 ADR·트러블슈팅 **템플릿**(틀)은 senior-backend가 초안을 만들고 사용자가 검토·커밋한다. 기록 본문은 6장의 문답 방식을 따른다.
+- 에이전트 커밋·PR에 `Co-Authored-By` 꼬리말이나 AI 작성 문구를 붙이지 않는다. docs 레포 `.claude/settings.json`의 `"attribution": false`로 끈다 (Claude Code v2.1.281 이상 필요).
+- 브랜치 보호는 걸지 않는다. 작업자가 사용자 한 명뿐이고 실제 프로덕트가 아니므로 PR 머지는 규칙으로만 지킨다.
 
 ## 4. 이슈 기반 프로젝트 관리
 
@@ -186,10 +186,10 @@ claude --add-dir ../{프로젝트명}-api ../{프로젝트명}-web ../{프로젝
 - **작업 이슈**: 코드가 바뀌는 레포에 생성. `[FE]` → web, `[BE]` → api, `[INFRA]` → infra.
 - **Issue type** (org 단위 GitHub Issue types): `Epic` / `Feature` / `Bug` / `Task`
   - chore·문서 작업은 `Task`로 묶는다. `Epic`은 docs 레포의 Epic 이슈에만 쓴다.
-  - ~~라벨 `type:feature` / `type:bug` / `type:chore` / `type:docs`~~ → Issue type으로 대체 (2026-10-28). 이슈당 종류가 하나로 강제되고 Projects 보드에서 필드로 다룰 수 있어서.
+  - 종류를 라벨(`type:*`)로 표시하지 않는다.
 - **Label**
   - 영역: `area:web` / `area:api` / `area:infra` / `area:design`
-  - 우선순위: `priority:high` / `priority:medium` / `priority:low` (2026-10-28 확정)
+  - 우선순위: `priority:high` / `priority:medium` / `priority:low`
   - 라벨은 레포 단위라 docs·api·web·infra 4개 레포에 같은 세트를 만든다.
 - **조직 단위 GitHub Projects 보드** 하나로 전 레포 이슈를 칸반(할 일 / 진행 중 / 리뷰 중 / 완료)으로 본다.
 
@@ -209,7 +209,7 @@ PM: PRD 작성 → Epic + 작업 이슈 생성 (각 이슈에 인수조건 포�
 
 ### 세팅 시 확인 필요
 
-- [ ] 다른 레포 간 sub-issue 연결이 되는지. 안 되면 Epic 본문에 체크리스트로 작업 이슈 링크. → PM이 만드는 첫 Epic에서 확인 (2026-10-28)
+- [ ] 다른 레포 간 sub-issue 연결이 되는지. 안 되면 Epic 본문에 체크리스트로 작업 이슈 링크. → PM이 만드는 첫 Epic에서 확인
 - [ ] GitHub MCP로 Projects 보드 조작이 되는지. 안 되면 `status:in-progress` 같은 라벨로 상태 관리.
 
 ## 5. Git 규칙
@@ -234,7 +234,7 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 - scope: `web` `api` `infra` `docs` `design`
 - 제목은 한국어 허용, 50자 이내, 마침표 없음.
 
-### 템플릿 (작성 완료, 2026-10-28)
+### 템플릿
 
 - **커밋 템플릿** `.gitmessage`: **api 레포 루트**에만 둔다 (편집기로 커밋하는 건 사용자뿐, 에이전트는 `-m`이라 템플릿 미사용). 제목 형식·type 목록·본문(무엇을, 왜)·`Closes #`만 `#` 주석으로 둔 간소화 버전. 적용: 기기마다 api 레포에서 `git config commit.template .gitmessage` (전역 설정 아님)
 - **PR 템플릿**: 관련 이슈(Closes #) / 변경 내용 / 확인 방법 체크리스트 / 리뷰어에게(특히 봐줬으면 하는 부분)
@@ -259,14 +259,14 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 - 핵심은 **실패한 가설까지 포함한 과정**.
 - 양식: 발생일·해결일·관련 이슈·해결 PR·발견 경로(테스트/로컬/배포/리뷰) / 현상(관찰된 사실) / 원인 추적(가설 → 검증 → 결과, 반복) / 근본 원인 / 해결 / 재발 방지
 
-- 템플릿: api 레포 `docs/adr/0000-template.md`, `docs/troubleshooting/0000-template.md` (senior-backend 초안, 2026-10-28 사용자 확정)
+- 템플릿: api 레포 `docs/adr/0000-template.md`, `docs/troubleshooting/0000-template.md`
 
 ### 운영 원칙
 
 - api 레포 README에 "주요 기술 결정" 3~5개, "해결한 문제" 3~5개를 요약하고 링크.
 - 기록마다 관련 이슈·PR 링크 (날짜가 찍힌 이력이 사후 작성이 아니라는 증거).
 - 결정·해결 **직후** 바로 작성.
-- ~~본문은 사용자가 직접 작성. 에이전트가 대신 쓰지 않는다.~~ → **문답 기반 작성으로 변경 (2026-10-28).** Markdown 서식을 맞춰 직접 쓰는 시간 대비 효과가 낮아서.
+- 본문은 **문답 기반**으로 작성한다.
   1. 메인 Claude가 템플릿 항목 순서로 질문하고, 논리적 빈틈("이 대안은 왜 검토 안 했나", "관찰인가 추측인가")을 짚는다. 사용자가 답한다.
   2. senior-backend가 **사용자의 답변만을 근거로** 본문을 작성한다. 답변에 없는 근거·대안·수치를 지어내지 않고, 빠진 부분은 `TODO(질문)`으로 남긴다.
   3. 사용자가 검토·수정·승인하고 직접 커밋한다 (api 레포 규칙 그대로).
@@ -282,24 +282,13 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 
 ## 8. 미결정 사항
 
-- [x] ~~도메인~~ → 범용 B2B 영업 CRM으로 확정 (0장)
-- [x] ~~프로젝트명~~ → `dealtrail`로 확정 (0장)
-- [x] ~~Organization 이름~~ → `dealtrail-crm`으로 확정 (`dealtrail`은 GitHub에서 이미 사용 중). 레포 이름은 `dealtrail-*` 그대로 사용
 - [ ] 체험 시 선택 가능한 업종 목록과 업종별 예시 데이터 (PM 제안 → 사용자 확정)
 - [ ] 체험 작업 공간 유지 시간 (예: 24시간)
 - [ ] 배포 방식 (EC2 + Docker Compose vs ECS) → infra 에이전트가 비용 비교 후 제안
-- [ ] GitHub MCP 연결 (Fine-grained PAT, `--scope user`로 등록. 프로젝트 범위 `.mcp.json`에 토큰 넣지 않기)
-- [ ] 세팅 시 확인 항목 (4장)
+- [ ] 4장 세팅 시 확인 항목 (sub-issue 연결, Projects 보드 조작)
 
-## 9. 다음 단계 제안 순서
+## 9. 다음 단계
 
-프로젝트명을 PM 에이전트에게 받으려면 에이전트가 먼저 있어야 하므로, docs 폴더를 임시 이름으로 로컬에서 시작한다.
-
-1. ~~로컬에 임시 docs 폴더(예: `workspace/crm-docs`)를 만들고 이 문서를 넣은 뒤 `git init`~~ ✅
-2. ~~CLAUDE.md, `.claude/agents/` 정의 파일 작성 (이 문서 기준, 작성 전 사용자 확인)~~ ✅
-3. ~~PM 에이전트에게 프로젝트명 후보 요청 → 사용자 결정~~ ✅
-4. ~~Organization과 레포 5개 생성, 로컬 폴더 이름을 `{프로젝트명}-docs`로 바꾸고 push~~ ✅
-5. ~~GitHub MCP 연결 확인 (4장의 세팅 시 확인 항목 포함)~~ ✅
-6. ~~`.github` 레포에 공용 템플릿, api 레포에 ADR·트러블슈팅 템플릿 작성~~ ✅
-7. 첫 ADR: "레포를 이렇게 나눈 이유"
-8. PM 에이전트로 PRD 작성 시작 (체험 업종 목록·예시 데이터 제안 포함)
+1. 첫 ADR: "레포를 이렇게 나눈 이유" (api 레포 `docs/adr/0001-레포-분리.md`)
+2. PRD 확정: `prd/99-decisions-tbd.md`의 TBD 결정 → 8장 반영
+3. PM이 Milestone `v0.1 MVP`, Epic(docs 레포)·작업 이슈 생성
