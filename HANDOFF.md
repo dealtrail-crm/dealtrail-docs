@@ -291,5 +291,5 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 
 ## 9. 다음 단계
 
-1. PRD 확정: `prd/99-decisions-tbd.md`의 TBD 결정 → 8장 반영
+1. PRD 확정: 00·01·07 검토 완료. 남은 TBD는 `prd/99-decisions-tbd.md`의 TBD-3·4·5·7·8·10 (02·04·05·06 문서 검토와 함께 결정)
 2. PM이 Milestone `v0.1 MVP`, Epic(docs 레포)·작업 이슈 생성
