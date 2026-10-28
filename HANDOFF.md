@@ -189,7 +189,8 @@ claude --add-dir ../{프로젝트명}-api ../{프로젝트명}-web ../{프로젝
   - ~~라벨 `type:feature` / `type:bug` / `type:chore` / `type:docs`~~ → Issue type으로 대체 (2026-10-28). 이슈당 종류가 하나로 강제되고 Projects 보드에서 필드로 다룰 수 있어서.
 - **Label**
   - 영역: `area:web` / `area:api` / `area:infra` / `area:design`
-  - 우선순위: `priority:high` 등
+  - 우선순위: `priority:high` / `priority:medium` / `priority:low` (2026-10-28 확정)
+  - 라벨은 레포 단위라 docs·api·web·infra 4개 레포에 같은 세트를 만든다.
 - **조직 단위 GitHub Projects 보드** 하나로 전 레포 이슈를 칸반(할 일 / 진행 중 / 리뷰 중 / 완료)으로 본다.
 
 ### 흐름

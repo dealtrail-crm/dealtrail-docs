@@ -54,7 +54,7 @@ workspace/
 - Milestone = 출시 단위 (예: `v0.1 MVP`). Epic 이슈 = PRD 기능 하나, **docs 레포**에 생성.
 - 작업 이슈는 코드가 바뀌는 레포에: `[FE]` → web, `[BE]` → api, `[INFRA]` → infra.
 - 종류: GitHub **Issue type** `Epic` / `Feature` / `Bug` / `Task` (chore·문서 작업은 `Task`). `type:*` 라벨은 쓰지 않는다.
-- 라벨: `area:web|api|infra|design`, `priority:*`.
+- 라벨: `area:web|api|infra|design`, `priority:high|medium|low`. (docs·api·web·infra 4개 레포 공통)
 - 흐름: PM이 이슈 생성(인수조건 포함) → 메인이 area 라벨로 분배 → 에이전트가 브랜치·구현·PR(`Closes #번호`) → 리뷰 → 머지.
 
 ## Git 규칙
