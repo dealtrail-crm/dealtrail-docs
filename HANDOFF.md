@@ -172,7 +172,8 @@ cd workspace/{프로젝트명}-docs
 claude --add-dir ../{프로젝트명}-api ../{프로젝트명}-web ../{프로젝트명}-infra
 ```
 
-- 에이전트 커밋 권한: docs / web / infra 만.
+- 에이전트 커밋 권한: docs / web / infra / .github 만. `.github` 레포(공용 이슈·PR 템플릿)는 pm이 작성·커밋 (2026-10-28 추가).
+- api 레포의 ADR·트러블슈팅 **템플릿**(틀)은 senior-backend가 초안을 만들고 사용자가 검토·커밋한다. 기록 본문은 6장대로 사용자가 쓴다 (2026-10-28).
 - 에이전트 커밋·PR에 `Co-Authored-By` 꼬리말이나 AI 작성 문구를 붙이지 않는다. Claude Code는 기본으로 붙이므로 docs 레포 `.claude/settings.json`의 `attribution` 설정으로 끈다. → `"attribution": false`로 적용 (v2.1.281 이상 필요, Windows·macOS 모두 최신 버전 사용 중. 2026-10-28)
 - ~~api 레포 `main`에는 브랜치 보호(PR 필수)를 건다.~~ → 걸지 않기로 결정 (2026-10-28). 작업자가 사용자 한 명뿐이고 실제 프로덕트가 아니므로 PR 머지는 규칙으로만 지킨다.
 

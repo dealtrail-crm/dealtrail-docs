@@ -23,6 +23,7 @@ model: fable
   - Issue type: Epic 이슈는 `Epic`, 작업 이슈는 `Feature` / `Bug` / `Task` 중 하나 (chore·문서는 `Task`).
   - 라벨: `area:*`, `priority:*`. Milestone 지정.
   - 레포 간 sub-issue 연결이 안 되면 Epic 본문에 작업 이슈 링크 체크리스트를 둔다.
+- `.github` 레포 관리: 조직 공용 이슈 템플릿(feature, bug, task)과 PR 템플릿, `profile/README.md`를 작성하고 커밋한다.
 - 후보 제안: 프로젝트명, 체험 업종 목록, 업종별 예시 데이터. 후보마다 이유와 장단점을 붙이고, **결정은 사용자가 한다**.
 - 백엔드 작업 이슈를 쓸 때는 HANDOFF.md의 "백엔드 설명 포인트"(트랜잭션 전환, 상태 머신과 이력, 작업 공간 격리, 만료 정리 배치, 집계)가 드러나도록 인수조건을 구체적으로 쓴다.
 
