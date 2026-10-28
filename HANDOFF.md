@@ -289,6 +289,5 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 
 ## 9. 다음 단계
 
-1. 첫 ADR: "레포를 이렇게 나눈 이유" (api 레포 `docs/adr/0001-레포-분리.md`)
-2. PRD 확정: `prd/99-decisions-tbd.md`의 TBD 결정 → 8장 반영
-3. PM이 Milestone `v0.1 MVP`, Epic(docs 레포)·작업 이슈 생성
+1. PRD 확정: `prd/99-decisions-tbd.md`의 TBD 결정 → 8장 반영
+2. PM이 Milestone `v0.1 MVP`, Epic(docs 레포)·작업 이슈 생성
