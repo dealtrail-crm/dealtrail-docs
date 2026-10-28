@@ -183,8 +183,10 @@ claude --add-dir ../{프로젝트명}-api ../{프로젝트명}-web ../{프로젝
 - **Milestone**: 출시 단위 (예: `v0.1 MVP`)
 - **Epic 이슈**: PRD의 기능 하나. **docs 레포**에 생성. PM이 생성.
 - **작업 이슈**: 코드가 바뀌는 레포에 생성. `[FE]` → web, `[BE]` → api, `[INFRA]` → infra.
+- **Issue type** (org 단위 GitHub Issue types): `Epic` / `Feature` / `Bug` / `Task`
+  - chore·문서 작업은 `Task`로 묶는다. `Epic`은 docs 레포의 Epic 이슈에만 쓴다.
+  - ~~라벨 `type:feature` / `type:bug` / `type:chore` / `type:docs`~~ → Issue type으로 대체 (2026-10-28). 이슈당 종류가 하나로 강제되고 Projects 보드에서 필드로 다룰 수 있어서.
 - **Label**
-  - 종류: `type:feature` / `type:bug` / `type:chore` / `type:docs`
   - 영역: `area:web` / `area:api` / `area:infra` / `area:design`
   - 우선순위: `priority:high` 등
 - **조직 단위 GitHub Projects 보드** 하나로 전 레포 이슈를 칸반(할 일 / 진행 중 / 리뷰 중 / 완료)으로 본다.
@@ -205,7 +207,7 @@ PM: PRD 작성 → Epic + 작업 이슈 생성 (각 이슈에 인수조건 포�
 
 ### 세팅 시 확인 필요
 
-- [ ] 다른 레포 간 sub-issue 연결이 되는지. 안 되면 Epic 본문에 체크리스트로 작업 이슈 링크.
+- [ ] 다른 레포 간 sub-issue 연결이 되는지. 안 되면 Epic 본문에 체크리스트로 작업 이슈 링크. → PM이 만드는 첫 Epic에서 확인 (2026-10-28)
 - [ ] GitHub MCP로 Projects 보드 조작이 되는지. 안 되면 `status:in-progress` 같은 라벨로 상태 관리.
 
 ## 5. Git 규칙
