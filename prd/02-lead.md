@@ -73,7 +73,7 @@ Lead 상태는 다섯 가지다. 신규·진행 중·검증됨은 "열린 상태
 - Lead 담당자 배정, 담당자별 뷰 (사용자 개념 없음)
 - Lead 점수(Scoring), 자동 검증 규칙
 - 웹 폼·이메일로 Lead 자동 유입
-- 전환 시 Opportunity 생성을 건너뛰는 옵션 (HANDOFF: 세 엔티티 동시 생성이 범위. "선택 생성"은 범위 제안으로만 둔다)
+- 전환 시 Opportunity 생성을 건너뛰는 옵션 (HANDOFF: 세 엔티티 동시 생성이 범위)
 - 전환 취소(되돌리기)
 - 전환 시 Lead의 활동을 Opportunity나 Account에 연결하기, 또는 복사해 Lead에도 남기기. 활동의 대상은 새 Contact 하나로만 바뀐다 (`AC-LD-21`)
 - 전환된 Lead에 새 활동 추가 (`AC-LD-05`)

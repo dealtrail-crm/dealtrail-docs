@@ -42,9 +42,9 @@
 | 대시보드 (단계별 금액, 수주율) | 다중 조직·복잡한 권한 계층 |
 
 **체험 방식 (즉시 사용성 확보)**
-- 방문자는 개인정보 없이 **테스트 계정**으로 바로 체험한다. 미리 둔 테스트 계정(기본 5개) 중 빈 계정에 비밀번호를 정해 24시간 동안 독점으로 빌린다. 같은 IP는 동시에 1개만 빌릴 수 있다.
+- 방문자는 개인정보 없이 **테스트 계정**으로 바로 체험한다. 미리 둔 테스트 계정(기본 5개) 중 빈 계정에 비밀번호를 정해 24시간(기본값, 설정값) 동안 독점으로 빌린다. 같은 IP는 동시에 1개만 빌릴 수 있다.
 - 대여 후 **업종을 선택**하면 그 업종의 예시 데이터가 들어 있는 전용 작업 공간이 생긴다. 초기화 버튼으로 데이터를 지우고 업종을 다시 고를 수 있다.
-- 24시간이 지나면 비밀번호와 데이터를 지우고 계정을 반납한다.
+- 대여 시간이 지나면 비밀번호와 데이터를 지우고 계정을 반납한다. 정리 주기도 설정값이다 (`prd/99-decisions-tbd.md` TBD-26).
 - 며칠에 걸쳐 써 보려는 사람을 위해 아이디·비밀번호만으로 하는 **일반 회원가입**도 둔다 (소셜 로그인 없음).
 - 인증은 핵심이 아니므로 단순하게 둔다. 로그인은 브라우저를 닫아도 유지된다.
 - 세부 규칙은 `prd/01-trial-workspace.md`.
@@ -75,6 +75,11 @@
 - **DB**: 같은 EC2 안의 PostgreSQL 컨테이너 + 매일 EBS 스냅샷 7일 보관. RDS는 쓰지 않는다.
 - **파일 위치**: Dockerfile과 짧은 CI 호출 워크플로는 각 앱 레포(api 레포 파일은 사용자가 커밋), 재사용 워크플로·운영/로컬 Compose·Caddyfile·Terraform은 infra 레포.
 - **이미지 저장소**: GHCR (public). 이미지에 비밀값을 넣지 않는다.
+- **Terraform state**: S3 원격 state + S3 잠금. 두 기기(Windows·macOS)가 같은 state를 쓴다.
+- **CI/CD 인증**: GitHub Actions는 OIDC 역할로 AWS에 인증한다. 장기 접근 키를 두지 않는다.
+- **배포 실행**: SSM Run Command로 EC2에서 `docker compose pull && up`을 실행한다. SSH(22)는 열지 않는다. 워크플로는 명령 결과를 기다려 실패를 감지한다.
+- **고정 IP**: Elastic IP. 도메인이 가리키는 IP가 인스턴스 재시작에도 바뀌지 않게 한다.
+- **롤백**: 이미지 태그는 커밋 SHA(+ `latest`). 이전 SHA 태그로 다시 띄워 되돌린다. DB 스키마는 이미지 롤백으로 되돌아가지 않는다.
 - **방문자 IP**: Caddy가 실제 접속 IP로 `X-Forwarded-For`를 다시 쓰고, Spring은 `server.forward-headers-strategy=native`로 내부 프록시만 신뢰한다. 보안 그룹은 80·443만 연다. 테스트 계정 대여·회원가입 요청은 브라우저가 `/api`를 직접 호출한다 (Next.js 서버 경유 시 방문자 IP를 잃음).
 - **정리 배치**: 앱 안 스케줄러(Spring `@Scheduled`). 외부 트리거를 두지 않는다.
 - **도메인**: 새로 구매. **AWS 계정**: 새로 생성, Paid plan + 예산 알림(월 $30)을 가장 먼저 만든다.
@@ -324,16 +329,18 @@ PRD(00~07, `prd/seed/`)·디자인 토큰·인프라 구성(1장)은 확정됐�
 
 1. PM이 남은 이슈 생성을 이어서 끝낸다
    - 이미 생성: 4개 레포 `area:docs` 라벨, Milestone `v0.1 MVP`(각 레포 #1), docs#1~#15(Epic 7 + `[DOCS]` 계약 8), api#1~#28(초안 B01~B28, 번호 일치)
-   - 읽을 것: `issue-draft.md`(초안 전체), `issue-work/`(이슈 본문 `KEY.md`, `manifest.txt` 생성 목록, `map.txt` 초안 키→실제 번호, `partial.txt` 보정 대상, `types.txt` Issue type 노드 ID, `*.sh` 생성 스크립트. 스크립트는 Windows scratchpad 경로 기준이라 경로를 바꿔 쓴다), 4장 "이슈 생성 도구"
+   - 읽을 것: `issue-draft.md`(초안 전체), `issue-work/`(이슈 본문 `KEY.md`, `manifest.txt` 생성 목록, `map.txt` 초안 키→실제 번호, `partial.txt` 보정 대상, `types.txt` Issue type 노드 ID, `gen_*.sh` 본문 생성 스크립트(이미 실행됨, 다시 돌리지 않는다)), 4장 "이슈 생성 도구". 이슈 생성·type 보정·보드 추가 스크립트는 레포에 없으므로 4장 도구 설명대로 새로 짠다
    - 순서:
      1. 보정: docs#5·#7 type `Epic`, api#28 type `Feature` + Project 추가
      2. `manifest.txt` 중 `map.txt`에 없는 키 생성: api B29~B36, web F01~F18·F20~F24, infra IN0~IN7. Epic 단위로 짧게 돌린다. 중복 확인은 `jq --arg`로 제목을 넘긴다(제목에 `"`가 든 이슈에서 문자열 삽입이 깨졌다)
      3. 치환 패스: 모든 본문의 `{{KEY}}`를 `map.txt` 기준 `dealtrail-crm/<repo>#<n>`으로 바꿔 `gh issue edit --body-file`. 끝나면 `{{` 잔존 검사
      4. sub-issue 연결: Epic 1~7 ← 해당 BE·FE·계약 이슈 (공통 규약 docs#8과 인프라 이슈는 Epic 없음). 매핑은 `issue-work/E*.md`
-     5. `.github` 레포 Task·Feature 템플릿 주석에 `[DOCS] docs 레포 (API 계약·디자인 등 문서 작업)` 추가
+     5. `.github` 레포 Task·Feature·Bug 템플릿 주석에 `[DOCS] docs 레포 (API 계약·디자인 등 문서 작업)` 추가
      6. 4장 "설명 포인트별 핵심 이슈" 표의 집계 행을 실제 번호로 갱신
-   - 끝나면 `issue-draft.md`와 `issue-work/`를 삭제·커밋한다
-2. senior-backend가 API 계약 공통 규약(docs#8)부터 작성 → frontend 검토 → 사용자 승인. 이어서 Epic 1 계약(docs#9)
+   - 끝나면 `issue-draft.md`와 `issue-work/`를 반드시 삭제·커밋한다. `issue-work/`는 작업 환경을 옮길 때 컨텍스트를 잇기 위한 임시 디렉터리다
+2. senior-backend가 API 계약 공통 규약(docs#8) 작성 → frontend 검토 → 사용자 승인
    - 1장 조건 반영: 테스트 계정 대여·회원가입은 브라우저가 `/api`를 직접 호출
-3. designer가 화면 흐름·화면 스펙 작성. 산출물마다 `design/preview/`에 미리보기 HTML을 함께 만든다
-4. infra가 IN0(인프라 구성 결정 학습 가이드)·IN1(로컬 Compose) 착수. AWS 계정 생성(Paid plan, 예산 알림 먼저)과 도메인 구매는 사용자
+3. designer가 빈 테스트 계정 진입 방식(목록 선택 / 자동 배정, `prd/01-trial-workspace.md` `AC-WS-02`) 안을 내고 사용자가 정한다. 이 결정 뒤에 senior-backend가 Epic 1 계약(docs#9)을 작성한다 (진입 방식에 따라 계정 목록 조회 API 유무가 갈린다)
+   - 같은 작업에서 `design/tokens.md` "남은 시간 임박 표시"의 `prd/99-decisions-tbd.md` P6 참조를 `AC-COMMON-08` 참조로 바꾼다 (P6 행은 삭제됨)
+4. designer가 화면 흐름·화면 스펙 작성. 산출물마다 `design/preview/`에 미리보기 HTML을 함께 만든다
+5. infra가 IN0(인프라 구성 결정 학습 가이드)·IN1(로컬 Compose) 착수. AWS 계정 생성(Paid plan, 예산 알림 먼저)과 도메인 구매는 사용자
