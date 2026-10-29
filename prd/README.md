@@ -8,15 +8,15 @@
 | 파일 | 내용 | Epic 매핑 |
 |---|---|---|
 | [`00-overview.md`](./00-overview.md) | 제품 목표, 대상, 핵심 흐름, 용어, 공통 요구사항, MVP 제외 범위 | (Epic 아님, 공통 기준) |
-| [`01-trial-workspace.md`](./01-trial-workspace.md) | 테스트 계정과 체험 작업 공간: 테스트 계정 대여, 업종 선택, 예시 데이터, 초기화, 격리, 만료·정리, 엔티티 상한 | Epic 1 |
-| [`02-lead.md`](./02-lead.md) | Lead 등록·검증·전환 (Account·Contact·Opportunity 동시 생성) | Epic 2 |
-| [`03-account-contact.md`](./03-account-contact.md) | Account / Contact 관리 | Epic 3 |
-| [`04-opportunity-pipeline.md`](./04-opportunity-pipeline.md) | Opportunity 단계 관리 + 파이프라인 칸반 + 단계 변경 이력 | Epic 4 |
+| [`01-trial-workspace.md`](./01-trial-workspace.md) | 테스트 계정과 체험 작업 공간: 테스트 계정 대여, 업종 선택, 예시 데이터, 초기화, 격리, 만료·정리, 엔티티 상한 | Epic 1 (대여·세션·빈 작업 공간 생성), Epic 6 (예시 데이터·초기화·격리 검증·정리) |
+| [`02-lead.md`](./02-lead.md) | Lead 등록·검증·전환 (Account·Contact·Opportunity 동시 생성) | Epic 4 |
+| [`03-account-contact.md`](./03-account-contact.md) | Account / Contact 관리 | Epic 2 (Opportunity 연결 부분은 Epic 3, 활동 부분은 Epic 5) |
+| [`04-opportunity-pipeline.md`](./04-opportunity-pipeline.md) | Opportunity 단계 관리 + 파이프라인 칸반 + 단계 변경 이력 | Epic 3 (활동 타임라인은 Epic 5) |
 | [`05-activity.md`](./05-activity.md) | 활동 기록 (통화·미팅·할 일) | Epic 5 |
-| [`06-dashboard.md`](./06-dashboard.md) | 대시보드 (단계별 금액, 수주율) | Epic 6 |
-| [`07-member.md`](./07-member.md) | 회원 계정: 아이디·비밀번호 가입, 로그인, 영구 보관, 가입 남용 방지 | Epic 7 |
+| [`06-dashboard.md`](./06-dashboard.md) | 대시보드 (단계별 금액, 수주율) | Epic 7 |
+| [`07-member.md`](./07-member.md) | 회원 계정: 아이디·비밀번호 가입, 로그인, 영구 보관, 가입 남용 방지 | Epic 8 |
 | [`99-decisions-tbd.md`](./99-decisions-tbd.md) | 결정 필요 항목(TBD) 목록, 후보, 장단점, PM 추천 | (문서) |
-| [`seed/`](./seed/README.md) | 업종별 예시 데이터 명세: 공통 규칙(`README.md`), 제조(`manufacturing.md`), IT·소프트웨어(`it-software.md`), 전문 서비스(`professional-services.md`). 규모·분포의 근거는 01 §3.4.1 | (Epic 1의 부속 문서) |
+| [`seed/`](./seed/README.md) | 업종별 예시 데이터 명세: 공통 규칙(`README.md`), 제조(`manufacturing.md`), IT·소프트웨어(`it-software.md`), 전문 서비스(`professional-services.md`). 규모·분포의 근거는 01 §3.4.1 | (Epic 6의 부속 문서) |
 
 ## 기능 문서의 공통 형식
 
@@ -50,10 +50,12 @@
 
 ## 우선순위 (Milestone `v0.1 MVP` 기준)
 
+구현 순서(Epic 1~8)는 `HANDOFF.md` 4장 "v0.1 MVP Epic"을 따른다. 우선순위는 중요도이지 순서가 아니다.
+
 | 우선순위 | 기능 | 이유 |
 |---|---|---|
-| `priority:high` | 01 테스트 계정·체험 작업 공간, 02 Lead 전환, 04 Opportunity 파이프라인, 06 대시보드 | 핵심 원칙(즉시 체험)과 백엔드 설명 포인트가 집중된 기능 |
-| `priority:medium` | 03 Account/Contact, 05 활동 기록, 07 회원 계정 (제안, 확정은 사용자) | 필요하지만 설명 포인트가 적고, 선행 기능이 있어야 의미가 있음. 07은 01의 흐름을 재사용하므로 01 다음에 온다 |
+| `priority:high` | 01 테스트 계정·체험 작업 공간, 02 Lead 전환, 03 Account/Contact, 04 Opportunity 파이프라인, 06 대시보드 | 핵심 원칙(즉시 체험)과 백엔드 설명 포인트가 집중된 기능. 03은 설명 포인트가 없지만 Epic 3·4의 선행이라 high |
+| `priority:medium` | 05 활동 기록, 07 회원 계정 | 필요하지만 설명 포인트가 적고, 선행 기능이 있어야 의미가 있음. 07은 01·06의 흐름을 재사용하므로 가장 뒤에 온다 |
 
 ## 이 문서가 다루지 않는 것
 

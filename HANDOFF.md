@@ -197,7 +197,7 @@ claude --add-dir ../{프로젝트명}-api ../{프로젝트명}-web ../{프로젝
 ### 구조
 
 - **Milestone**: 출시 단위 (예: `v0.1 MVP`)
-- **Epic 이슈**: PRD의 기능 하나. **docs 레포**에 생성. PM이 생성.
+- **Epic 이슈**: **구현 순서 단위**. 앞선 Epic에만 의존하고, 끝나면 화면에서 직접 써볼 수 있는 결과가 나오게 자른다. PRD 기능 하나가 여러 Epic에 걸칠 수 있다(01 → Epic 1·6). **docs 레포**에 생성. PM이 생성. 제목은 `[Epic N] 제목`.
 - **작업 이슈**: 코드가 바뀌는 레포에 생성. `[FE]` → web, `[BE]` → api, `[INFRA]` → infra, `[DOCS]` → docs(API 계약 등 문서 작업).
 - **Issue type** (org 단위 GitHub Issue types): `Epic` / `Feature` / `Bug` / `Task`
   - chore·문서 작업은 `Task`로 묶는다. `Epic`은 docs 레포의 Epic 이슈에만 쓴다.
@@ -207,6 +207,24 @@ claude --add-dir ../{프로젝트명}-api ../{프로젝트명}-web ../{프로젝
   - 우선순위: `priority:high` / `priority:medium` / `priority:low`. PM이 정하고, 조정이 필요하면 사용자가 PM에게 요청한다.
   - 라벨은 레포 단위라 docs·api·web·infra 4개 레포에 같은 세트를 만든다.
 - **조직 단위 GitHub Projects 보드** 하나로 전 레포 이슈를 칸반(할 일 / 진행 중 / 리뷰 중 / 완료)으로 본다.
+
+### v0.1 MVP Epic (구현 순서)
+
+Epic 1~5 동안은 예시 데이터 없이 직접 입력해서 확인한다.
+
+| Epic | 제목 | Epic 이슈 | PRD | 끝나면 할 수 있는 것 |
+|---|---|---|---|---|
+| 1 | 체험 계정과 로그인 | docs#1 | 01 (대여·세션·빈 작업 공간 생성), 00 §6 | 체험하기 → 비밀번호 → 업종 선택 → 빈 작업 공간, 남은 시간·만료 안내 |
+| 2 | Account / Contact | docs#3 | 03 | 거래처·담당자 CRUD, 재직 상태 |
+| 3 | Opportunity와 파이프라인 | docs#4 | 04, 03의 Opportunity 연결 부분 | 칸반이 기본 화면, 단계 이동·거부·이력, 종료 잠금 |
+| 4 | Lead 등록·전환 | docs#2 | 02 | Lead 등록·상태 변경·전환(새/기존 Account) |
+| 5 | 활동 기록 | docs#5 | 05, 02·03·04의 활동 부분 | 상세 4곳 활동 기록, 모아 보기, 통합 타임라인, 전환 시 활동 이동, 삭제 시 활동 함께 삭제 |
+| 6 | 예시 데이터·초기화·정리 | docs#16 | 01 (적재·초기화·격리 검증·정리 배치), seed | 업종 고르면 예시 데이터 가득, 초기화로 업종 재선택, 만료 → 정리 |
+| 7 | 대시보드 | docs#6 | 06 | 집계·수주율·할 일 위젯, 초기화 버튼 대시보드 배치 |
+| 8 | 회원 계정 | docs#7 | 07 | 가입·로그인, 만료 없이 같은 흐름 |
+
+- 초기화 FE는 Epic 6에서 흐름을 만들고(진입점은 임시로 앱 셸) Epic 7에서 대시보드에 배치한다. 작업 공간 생성 뒤 이동 목적지는 Epic 3에서 파이프라인으로 확정한다.
+- 인프라 이슈 착수: infra#1·#2는 Epic 1 착수 전, infra#4·#3은 Epic 1 중, infra#5는 AWS 계정 생성 직후(늦어도 Epic 3 종료 전), infra#6~#8은 Epic 3 종료 후(첫 배포). 각 이슈 본문 "착수 시점" 참조.
 
 ### 흐름
 
@@ -227,10 +245,11 @@ PM: PRD 작성 → Epic + 작업 이슈 생성 (각 이슈에 인수조건 포�
 - **분할**: AC 2~4개당 이슈 하나. 화면·기능 경계상 예외가 필요하면 이유를 이슈 본문 "비고"에 적는다. 같은 PR로 끝나는 이슈가 많아 부담되면 사용자 요청 시 PM이 합친다.
 - **설명 포인트**: 이슈 하나에 설명 포인트 두 개를 섞지 않는다. 포인트별 "핵심 이슈" 하나를 정해 Epic 본문에 표시하고, ADR·트러블슈팅은 그 이슈를 가리킨다. 핵심 이슈 본문에는 "구현 시 결정할 것"을 둔다.
 - **AC 인용**: 이슈 본문에 AC ID를 그대로 인용하고 PRD 원문은 링크로 대신한다. `[공통]` AC는 FE·BE 양쪽 이슈에 같은 ID를 인용하고 줄 끝 괄호에 담당 부분을 적는다. 엔티티별 격리 AC는 격리 교차 검증 이슈에만 인용한다.
-- **선행 관계**: 이슈 본문에 선행 이슈 번호를 적는다.
+- **선행 관계**: 이슈 본문에 선행 이슈 번호를 적는다. 선행은 **같은 Epic 또는 앞선 Epic**의 이슈만 가리킨다. 뒤 Epic이 필요한 AC는 그 Epic의 이슈로 옮기고, 원 이슈에는 "(…부분은 Epic N의 이슈)"로 표시한다.
+- **이슈 참조 형식**: 이슈 참조(`dealtrail-crm/dealtrail-web#6`)를 둘 이상 나열할 때는 **한 줄에 하나씩** 불릿으로 쓴다. 범위 표기(`#14~#18`)를 쓰지 않는다. 참조에 붙는 설명은 상위 항목 줄이나 각 불릿 뒤에 둔다. "선행"·"설명 포인트"·Epic 본문의 하위 이슈·계약 목록 등 참조가 이어지는 모든 곳에 적용한다 (GitHub가 줄 안의 참조를 제목 링크로 렌더링해 여러 개가 이어지면 읽기 어렵다).
 - **라벨**: Epic에는 하위 작업 이슈가 있는 영역의 area 라벨을 모두 붙인다. 작업 이슈의 priority는 Epic과 다를 수 있다(다른 Epic의 선행이면 올린다).
 - **인프라 이슈**: Epic 없이 Milestone에만 연결한다. 본문 "관련 문서"에 HANDOFF 절·관련 AC ID·ADR 링크를 넣고, 완료 조건에 학습 가이드(infra 레포 `docs/learning/`) 작성을 넣는다.
-- **API 계약 이슈**: docs 레포 `[DOCS]` Task, `area:docs`. 공통 규약 1개(Epic 없음) + Epic별 계약(해당 Epic의 sub-issue). 작성 순서: 공통 → Epic 1 → 3 → 4 → 2 → 5 → 6 → 7.
+- **API 계약 이슈**: docs 레포 `[DOCS]` Task, `area:docs`. 공통 규약 1개(docs#8, Epic 없음) + Epic별 계약(해당 Epic의 sub-issue). 작성 순서: 공통 → Epic 1(docs#9) → 2(docs#11) → 3(docs#12) → 4(docs#10) → 5(docs#13) → 6(docs#17) → 7(docs#14) → 8(docs#15). Epic 6 계약은 Epic 1 계약 문서(`api/01-trial-workspace.md`)를 확장한다.
 
 ### 이슈 생성 도구
 
@@ -241,15 +260,15 @@ PM: PRD 작성 → Epic + 작업 이슈 생성 (각 이슈에 인수조건 포�
 
 ### 설명 포인트별 핵심 이슈
 
-| 설명 포인트 | 핵심 이슈 | 관련 이슈 |
+| 설명 포인트 | 핵심 이슈 (Epic) | 관련 이슈 (Epic) |
 |---|---|---|
-| 테스트 계정 동시 대여 경쟁 | dealtrail-api#4 | api#3, api#5 |
-| 작업 공간 생성·시드 | dealtrail-api#8 | api#7, api#9 |
-| 작업 공간 격리 | dealtrail-api#11 | api#12 |
-| 만료 대여 정리 배치 | dealtrail-api#13 | api#6 |
-| Lead 전환 트랜잭션 | dealtrail-api#16 | api#17, api#18 |
-| 단계 상태 머신 + 이력 | dealtrail-api#26 | api#27 |
-| 파이프라인 집계 | dealtrail-api#33 | api#28, api#34 |
+| 테스트 계정 동시 대여 경쟁 | dealtrail-api#4 (1) | api#3 (1), api#5 (1) |
+| 작업 공간 생성·시드 | dealtrail-api#8 (6) | api#7 (1, 빈 생성), api#9 (6) |
+| 작업 공간 격리 | dealtrail-api#11 (1) | api#12 (6, 교차 검증) |
+| 만료 대여 정리 배치 | dealtrail-api#13 (6) | api#6 (1, 만료 판정) |
+| Lead 전환 트랜잭션 | dealtrail-api#16 (4) | api#17 (4), api#18 (5, 활동 이동 합류) |
+| 단계 상태 머신 + 이력 | dealtrail-api#26 (3) | api#27 (3) |
+| 파이프라인 집계 | dealtrail-api#33 (7) | api#28 (3), api#34 (7) |
 
 ## 5. Git 규칙
 
@@ -325,13 +344,13 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 
 ## 9. 다음 단계
 
-PRD(00~07, `prd/seed/`)·디자인 토큰·인프라 구성(1장)은 확정됐고, v0.1 MVP 이슈는 4개 레포에 모두 생성돼 있다 (docs#1~#15, api#1~#36, web#1~#23, infra#1~#8. Epic 1~7의 sub-issue 연결 완료).
+PRD(00~07, `prd/seed/`)·디자인 토큰·인프라 구성(1장)은 확정됐고, v0.1 MVP 이슈는 4개 레포에 모두 생성돼 있다 (docs#1~#17, api#1~#36, web#1~#24, infra#1~#8). Epic은 4장 "v0.1 MVP Epic" 표의 8개 구현 순서 단위로 정리돼 있고 sub-issue 연결이 끝났다. Epic 1부터 차례로 끝낸다.
 
 1. senior-backend가 API 계약 공통 규약(docs#8) 작성 → frontend 검토 → 사용자 승인
    - 읽을 것: docs#8 본문("정할 것" 항목과 완료 조건), `prd/00-overview.md` §6 공통 요구사항, 1장 "인프라 구성", 2장 senior-backend 원칙(계약 문서 형식)
    - 산출물: `api/00-common.md`, `api/openapi.yaml` 골격. 1장 조건 반영: 테스트 계정 대여·회원가입은 브라우저가 `/api`를 직접 호출
    - frontend는 web#2(앱 셸)·web#5(공통 표시 규칙)를 이 규약으로 만들 수 있는지 docs#8 코멘트로 검토 결과를 남긴다
-2. designer가 빈 테스트 계정 진입 방식(목록 선택 / 자동 배정, `prd/01-trial-workspace.md` `AC-WS-02`) 안을 내고 사용자가 정한다. 이 결정 뒤에 senior-backend가 Epic 1 계약(docs#9)을 작성한다 (진입 방식에 따라 계정 목록 조회 API 유무가 갈린다)
+2. designer가 빈 테스트 계정 진입 방식(목록 선택 / 자동 배정, `prd/01-trial-workspace.md` `AC-WS-02`) 안을 내고 사용자가 정한다. 이 결정 뒤에 senior-backend가 Epic 1 계약(docs#9: 세션·대여·빈 작업 공간 생성까지. 적재 결합·초기화는 Epic 6 docs#17)을 작성한다 (진입 방식에 따라 계정 목록 조회 API 유무가 갈린다)
    - 같은 작업에서 `design/tokens.md` "남은 시간 임박 표시"의 `prd/99-decisions-tbd.md` P6 참조를 `AC-COMMON-08` 참조로 바꾼다 (P6 행은 삭제됨)
-3. designer가 화면 흐름·화면 스펙 작성. 산출물마다 `design/preview/`에 미리보기 HTML을 함께 만든다
-4. infra가 infra#1(인프라 구성 결정 학습 가이드)·infra#2(로컬 Compose) 착수. AWS 계정 생성(Paid plan, 예산 알림 먼저)과 도메인 구매는 사용자
+3. designer가 화면 흐름·화면 스펙 작성. 산출물마다 `design/preview/`에 미리보기 HTML을 함께 만든다. Epic 1에서 쓰는 임시 화면(작업 공간 생성 뒤 앱 셸 기본 화면)과 Epic 6의 초기화 임시 진입점 모양도 designer가 정한다
+4. infra가 infra#1(인프라 구성 결정 학습 가이드)·infra#2(로컬 Compose) 착수. AWS 계정 생성(Paid plan, 예산 알림 먼저)과 도메인 구매는 사용자. 나머지 infra 이슈의 착수 시점은 4장 "v0.1 MVP Epic" 참조

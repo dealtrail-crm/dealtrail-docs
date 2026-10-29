@@ -2,10 +2,10 @@
 
 | 항목 | 값 |
 |---|---|
-| Epic | Epic 4 |
+| Epic | Epic 3 (활동 타임라인은 Epic 5) |
 | 우선순위 | `priority:high` |
 | 관련 설명 포인트 | Opportunity 단계 전이: 허용된 단계로만 이동하는 상태 머신 + 변경 이력 |
-| 선행 | 01 체험 작업 공간, 03 Account (Opportunity는 Account 필수) |
+| 선행 | Epic 1·2 (01 작업 공간, 03 Account·Contact. Opportunity는 Account 필수) |
 | TBD | 없음 |
 
 ## 1. 목적

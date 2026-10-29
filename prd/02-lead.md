@@ -2,10 +2,10 @@
 
 | 항목 | 값 |
 |---|---|
-| Epic | Epic 2 |
+| Epic | Epic 4 (전환 시 활동 이동은 Epic 5) |
 | 우선순위 | `priority:high` |
 | 관련 설명 포인트 | Lead 전환: 여러 엔티티를 한 트랜잭션으로 생성, 중간 실패 시 전체 롤백 |
-| 선행 | 01 체험 작업 공간 |
+| 선행 | Epic 1~3 (01 작업 공간, 03 Account·Contact, 04 Opportunity) |
 | TBD | 없음 |
 
 ## 1. 목적

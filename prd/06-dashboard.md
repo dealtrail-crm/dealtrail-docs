@@ -2,10 +2,10 @@
 
 | 항목 | 값 |
 |---|---|
-| Epic | Epic 6 |
+| Epic | Epic 7 |
 | 우선순위 | `priority:high` |
 | 관련 설명 포인트 | 파이프라인 집계 (단계별 금액 합계, 수주율) |
-| 선행 | 04 Opportunity (집계 대상), 05 Activity (할 일 위젯을 둘 경우) |
+| 선행 | Epic 1~6 (04 Opportunity 집계 대상, 05 Activity 할 일 위젯, 01 예시 데이터 기대값) |
 | TBD | 없음 |
 
 ## 1. 목적

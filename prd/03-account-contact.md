@@ -2,10 +2,10 @@
 
 | 항목 | 값 |
 |---|---|
-| Epic | Epic 3 |
-| 우선순위 | `priority:medium` |
+| Epic | Epic 2 (Opportunity 연결 규칙은 Epic 3, 활동 부분은 Epic 5) |
+| 우선순위 | `priority:high` (Epic 3·4의 선행) |
 | 관련 설명 포인트 | (직접 해당 없음) 작업 공간 격리가 적용되는 기본 CRUD |
-| 선행 | 01 체험 작업 공간. 02 Lead 전환과 상호 참조 |
+| 선행 | Epic 1 (01 작업 공간). 02 Lead 전환(Epic 4)과 상호 참조 |
 | TBD | 없음 |
 
 ## 1. 목적
