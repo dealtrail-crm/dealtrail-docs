@@ -249,7 +249,7 @@ PM: PRD 작성 → Epic + 작업 이슈 생성 (각 이슈에 인수조건 포�
 | 만료 대여 정리 배치 | dealtrail-api#13 | api#6 |
 | Lead 전환 트랜잭션 | dealtrail-api#16 | api#17, api#18 |
 | 단계 상태 머신 + 이력 | dealtrail-api#26 | api#27 |
-| 파이프라인 집계 | 초안 B33 (미생성) | api#28, 초안 B34 (미생성) |
+| 파이프라인 집계 | dealtrail-api#33 | api#28, api#34 |
 
 ## 5. Git 규칙
 
@@ -325,22 +325,13 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 
 ## 9. 다음 단계
 
-PRD(00~07, `prd/seed/`)·디자인 토큰·인프라 구성(1장)은 확정됐다. 이슈 생성은 중간에 멈춘 상태다.
+PRD(00~07, `prd/seed/`)·디자인 토큰·인프라 구성(1장)은 확정됐고, v0.1 MVP 이슈는 4개 레포에 모두 생성돼 있다 (docs#1~#15, api#1~#36, web#1~#23, infra#1~#8. Epic 1~7의 sub-issue 연결 완료).
 
-1. PM이 남은 이슈 생성을 이어서 끝낸다
-   - 이미 생성: 4개 레포 `area:docs` 라벨, Milestone `v0.1 MVP`(각 레포 #1), docs#1~#15(Epic 7 + `[DOCS]` 계약 8), api#1~#28(초안 B01~B28, 번호 일치)
-   - 읽을 것: `issue-draft.md`(초안 전체), `issue-work/`(이슈 본문 `KEY.md`, `manifest.txt` 생성 목록, `map.txt` 초안 키→실제 번호, `partial.txt` 보정 대상, `types.txt` Issue type 노드 ID, `gen_*.sh` 본문 생성 스크립트(이미 실행됨, 다시 돌리지 않는다)), 4장 "이슈 생성 도구". 이슈 생성·type 보정·보드 추가 스크립트는 레포에 없으므로 4장 도구 설명대로 새로 짠다
-   - 순서:
-     1. 보정: docs#5·#7 type `Epic`, api#28 type `Feature` + Project 추가
-     2. `manifest.txt` 중 `map.txt`에 없는 키 생성: api B29~B36, web F01~F18·F20~F24, infra IN0~IN7. Epic 단위로 짧게 돌린다. 중복 확인은 `jq --arg`로 제목을 넘긴다(제목에 `"`가 든 이슈에서 문자열 삽입이 깨졌다)
-     3. 치환 패스: 모든 본문의 `{{KEY}}`를 `map.txt` 기준 `dealtrail-crm/<repo>#<n>`으로 바꿔 `gh issue edit --body-file`. 끝나면 `{{` 잔존 검사
-     4. sub-issue 연결: Epic 1~7 ← 해당 BE·FE·계약 이슈 (공통 규약 docs#8과 인프라 이슈는 Epic 없음). 매핑은 `issue-work/E*.md`
-     5. `.github` 레포 Task·Feature·Bug 템플릿 주석에 `[DOCS] docs 레포 (API 계약·디자인 등 문서 작업)` 추가
-     6. 4장 "설명 포인트별 핵심 이슈" 표의 집계 행을 실제 번호로 갱신
-   - 끝나면 `issue-draft.md`와 `issue-work/`를 반드시 삭제·커밋한다. `issue-work/`는 작업 환경을 옮길 때 컨텍스트를 잇기 위한 임시 디렉터리다
-2. senior-backend가 API 계약 공통 규약(docs#8) 작성 → frontend 검토 → 사용자 승인
-   - 1장 조건 반영: 테스트 계정 대여·회원가입은 브라우저가 `/api`를 직접 호출
-3. designer가 빈 테스트 계정 진입 방식(목록 선택 / 자동 배정, `prd/01-trial-workspace.md` `AC-WS-02`) 안을 내고 사용자가 정한다. 이 결정 뒤에 senior-backend가 Epic 1 계약(docs#9)을 작성한다 (진입 방식에 따라 계정 목록 조회 API 유무가 갈린다)
+1. senior-backend가 API 계약 공통 규약(docs#8) 작성 → frontend 검토 → 사용자 승인
+   - 읽을 것: docs#8 본문("정할 것" 항목과 완료 조건), `prd/00-overview.md` §6 공통 요구사항, 1장 "인프라 구성", 2장 senior-backend 원칙(계약 문서 형식)
+   - 산출물: `api/00-common.md`, `api/openapi.yaml` 골격. 1장 조건 반영: 테스트 계정 대여·회원가입은 브라우저가 `/api`를 직접 호출
+   - frontend는 web#2(앱 셸)·web#5(공통 표시 규칙)를 이 규약으로 만들 수 있는지 docs#8 코멘트로 검토 결과를 남긴다
+2. designer가 빈 테스트 계정 진입 방식(목록 선택 / 자동 배정, `prd/01-trial-workspace.md` `AC-WS-02`) 안을 내고 사용자가 정한다. 이 결정 뒤에 senior-backend가 Epic 1 계약(docs#9)을 작성한다 (진입 방식에 따라 계정 목록 조회 API 유무가 갈린다)
    - 같은 작업에서 `design/tokens.md` "남은 시간 임박 표시"의 `prd/99-decisions-tbd.md` P6 참조를 `AC-COMMON-08` 참조로 바꾼다 (P6 행은 삭제됨)
-4. designer가 화면 흐름·화면 스펙 작성. 산출물마다 `design/preview/`에 미리보기 HTML을 함께 만든다
-5. infra가 IN0(인프라 구성 결정 학습 가이드)·IN1(로컬 Compose) 착수. AWS 계정 생성(Paid plan, 예산 알림 먼저)과 도메인 구매는 사용자
+3. designer가 화면 흐름·화면 스펙 작성. 산출물마다 `design/preview/`에 미리보기 HTML을 함께 만든다
+4. infra가 infra#1(인프라 구성 결정 학습 가이드)·infra#2(로컬 Compose) 착수. AWS 계정 생성(Paid plan, 예산 알림 먼저)과 도메인 구매는 사용자
