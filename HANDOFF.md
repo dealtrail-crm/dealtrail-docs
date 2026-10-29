@@ -291,12 +291,11 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 
 ## 9. 다음 단계
 
-1. PRD 확정 (진행 중, `prd/`는 검토 중인 초안으로 커밋됨). 00·01·02·07 검토 완료. 남은 순서:
-   1. `04-opportunity-pipeline.md` 검토 → TBD-3(단계·전이, 최우선), TBD-10(통화) 결정
-      - 읽을 것: `prd/99-decisions-tbd.md`의 TBD-3(단계 후보 A·B, 전이 규칙 R1~R3, PM 추천 A + R2와 전이 표 초안)·TBD-10 → `04`의 단계·전이 관련 `[BE]` 인수조건(`AC-OP-02`, `AC-OP-08`, `AC-OP-11` 등)
-      - 정할 것: 단계 개수와 이름, 허용 전이 규칙, 통화 단위(PM 추천 KRW 정수)
-   2. `03-account-contact.md`, `05-activity.md`, `06-dashboard.md` 검토 → TBD-8(Activity 대상), TBD-4(수주율) 결정
-   3. TBD-3 확정 후 PM이 `01` §3.4.1 예시 데이터 분포와 `prd/seed/` 업종별 명세 작성
-   4. PRD 확정본 커밋
+1. PRD 확정 (진행 중, `prd/`는 검토 중인 초안으로 커밋됨). 00·01·02·04·07 검토 완료. 남은 순서:
+   1. `05-activity.md`, `03-account-contact.md`, `06-dashboard.md` 검토 → TBD-8(Activity 대상), TBD-4(수주율) 결정
+      - 읽을 것: `prd/99-decisions-tbd.md`의 TBD-8(후보 A·B·C, PM 추천 B: Lead + Opportunity)·TBD-4(후보 A·B·C, PM 추천 A: 건수·종료 건 기준) → `05`의 `[BE]` 인수조건(`AC-AT-08` 등), `03` `AC-ACC-03`, `06` `AC-DB-01`·`AC-DB-10`
+      - 정할 것: Activity가 붙는 대상, Lead 전환 시 활동 처리, 수주율 식과 라벨. 범위 조정 제안 P2(금액 기준 수주율 보조 표시) 채택 여부
+   2. PM이 `01` §3.4.1 예시 데이터 분포와 `prd/seed/` 업종별 명세 작성 (단계는 `04` §3.2로 확정됨)
+   3. PRD 확정본 커밋
    - 검토 방법: 기능 문서는 목적 → 유저 스토리 → 제외 범위 → 인수조건 순으로, `[BE]` 인수조건 위주로 읽는다. 사용자 피드백은 `feedback/`(git 제외)에 메모한다.
 2. PM이 Milestone `v0.1 MVP`, Epic(docs 레포)·작업 이슈 생성

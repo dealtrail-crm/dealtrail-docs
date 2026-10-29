@@ -6,7 +6,7 @@
 | 우선순위 | `priority:high` |
 | 관련 설명 포인트 | Lead 전환: 여러 엔티티를 한 트랜잭션으로 생성, 중간 실패 시 전체 롤백 |
 | 선행 | 01 체험 작업 공간 |
-| TBD | TBD-3 전환 시 Opportunity 초기 단계 |
+| TBD | 없음 |
 
 ## 1. 목적
 
@@ -55,7 +55,7 @@ Lead 상태는 다섯 가지다. 신규·진행 중·검증됨은 "열린 상태
 - [ ] `AC-LD-11` [BE] 전환 요청 한 번으로 전환이 만드는 엔티티가 **모두 생성**되고 Lead 상태가 "전환됨"으로 바뀐다. 새 Account 만들기면 Account, Contact, Opportunity(단계 이력 1건 포함, `AC-LD-14`)가 생성된다. 기존 Account 선택이면 Contact, Opportunity(단계 이력 1건 포함)가 생성되고 **기존 Account는 변경되지 않는다**. 어느 경우든 Opportunity는 정확히 1개 생성된다. 이 변경들은 함께 성공하거나 함께 실패한다.
 - [ ] `AC-LD-12` [BE] 전환 도중 어느 단계에서 실패해도 새 Account·Contact가 남지 않고, 기존 Account를 고른 경우 그 Account가 변경되지 않으며, Lead 상태도 바뀌지 않는다. **검증 조건**: (새 Account 만들기) Account·Contact가 저장된 뒤 Opportunity 저장 또는 Lead 상태 변경 단계에서 실패가 발생했을 때, 요청 전과 비교해 Account·Contact 수가 같고 Opportunity가 생기지 않았으며 Lead 상태가 그대로여야 한다. (기존 Account 선택) Contact가 저장된 뒤 같은 지점에서 실패했을 때, 요청 전과 비교해 Account 수와 선택한 Account의 내용이 같고 Contact 수가 같고 Opportunity가 생기지 않았으며 Lead 상태가 그대로여야 한다. 실패를 일으키는 방법은 구현 시 사용자가 정한다. 요청 입력 검증 실패(`AC-LD-04` 형식)는 아무것도 저장하기 전에 거부되므로 이 검증의 대상이 아니다. (두 경우 모두 자동 테스트로 남겨 포트폴리오에서 보여 준다)
 - [ ] `AC-LD-13` [BE] 생성된 Contact는 새로 만든 또는 선택한 Account에 속하고, 생성된 Opportunity는 그 Account와 Contact에 연결된다.
-- [ ] `AC-LD-14` [BE] 전환으로 생성된 Opportunity의 단계는 첫 번째 열린 단계(TBD-3)이고, 단계 이력에 "생성(전환)" 기록이 1건 남는다. (`04-opportunity-pipeline.md` `AC-OP-11` 참조)
+- [ ] `AC-LD-14` [BE] 전환으로 생성된 Opportunity의 단계는 첫 번째 열린 단계 "발굴"(`04-opportunity-pipeline.md` §3.2)이고, 단계 이력에 "생성(전환)" 기록이 1건 남는다. (`04-opportunity-pipeline.md` `AC-OP-11` 참조)
 - [ ] `AC-LD-15` [BE] 전환된 Lead는 전환으로 연결된 Account(새로 만든 것 또는 선택한 기존 것)와 자신이 만든 Contact·Opportunity의 식별자를 기억한다. FE는 Lead 상세에서 그 세 개로 이동하는 링크를 보여 준다.
 - [ ] `AC-LD-16` [BE] 같은 Lead를 두 번 전환하려 하면(연속 클릭, 두 탭 등) 두 번째는 "이미 전환됨"으로 거부되고 Account·Contact·Opportunity가 **중복 생성되지 않는다**. (동시성 처리 방식은 사용자 결정, 트러블슈팅 후보)
 - [ ] `AC-LD-17` [FE] 전환 성공 후 생성된 Opportunity 상세 화면으로 이동하고, 성공을 알리면서 무엇이 만들어졌는지 함께 알린다: 새 Account 만들기면 Account·Contact·Opportunity 세 개가 새로 만들어졌음을, 기존 Account 선택이면 그 Account에 Contact·Opportunity가 추가되었음을 전달한다.
@@ -75,6 +75,6 @@ Lead 상태는 다섯 가지다. 신규·진행 중·검증됨은 "열린 상태
 
 ## 5. 의존성 / 열린 질문
 
-- Opportunity 첫 단계(TBD-3)는 04 문서와 공유한다.
+- Opportunity 첫 단계(발굴)는 04 §3.2의 단계 정의를 따른다.
 - 전환 요청의 응답 형식, 부분 실패 시 에러 표현, 기존 Account 식별자를 전달하는 형식은 API 계약에서 정한다.
 - 전환 화면의 기존 Account 선택 방식(검색·목록 등)과 동일 이름 안내의 표현은 designer가 정한다.
