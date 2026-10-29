@@ -291,16 +291,12 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 
 ## 9. 다음 단계
 
-1. designer가 디자인 토큰 초안 작성 → 사용자 검토 (seed 명세와 독립이라 먼저 진행)
-   - 산출물: docs 레포 `design/tokens.md`(선택 근거 포함)와 Tailwind 설정 형태의 토큰
-   - 범위: 색(기본 팔레트 + 의미 색), 타이포그래피, 간격·라운드·그림자, 금액·날짜 표시 형식(`AC-COMMON-06`에서 designer에게 넘긴 "5,000만 원" / "50,000,000원" 선택 포함)
-   - 의미 색이 필요한 상태: Opportunity 단계 5개(발굴·제안·협상 / 수주·실패, `04` §3.2), Lead 상태 5개(`02` §3.2), 활동 종류 3개(`05` `AC-AT-01`), 지연(할 일 `AC-AT-09`·Opportunity `AC-DB-01`), 담당자 퇴사(`04` `AC-OP-25`), 준비 중 업종(`01` `AC-WS-12`), 수주율 계산 불가(`06` `AC-DB-03`)
-   - 조건: **라이트 모드만** 만들되 토큰은 의미 이름(예: `bg-surface`, `stage-won`)으로 두어 다크 모드 값을 나중에 추가만 하면 되는 구조. Salesforce 색·스타일을 따르지 않음. 텍스트·배경 대비 WCAG AA 확인
-   - 제외: 컴포넌트 스펙, 화면 흐름·레이아웃 (seed 명세·Epic 이후)
-2. PRD 마무리. 00~07 기능 문서 확정·커밋 완료, TBD-1~18 모두 결정. 남은 순서:
-   1. PM이 `01` §3.4.1 예시 데이터 분포와 `prd/seed/` 업종별 명세(제조·IT·소프트웨어·전문 서비스) 작성 → 사용자 검토
-      - 읽을 것: `01` §3.4.1(현재 분포), `04` §3.2(단계), `05` `AC-AT-01`·`AC-AT-13`(활동 대상 4종, 전환 시 Contact로 이동), `03` `AC-CT-08`·`04` `AC-OP-24`·`AC-OP-25`(퇴사 Contact)
-      - 정할 것: 엔티티별 건수와 단계·상태 분포, Activity 15건의 대상(Lead·Account·Contact·Opportunity)별 분포, 검증됨 Lead에 활동을 붙여 전환 시 이동이 보이게 할지, 퇴사 Contact와 "담당자 퇴사" 표시가 뜨는 열린 Opportunity를 예시에 둘지
-   2. PRD 확정본 커밋
-   - 검토 방법: 기능 문서는 목적 → 유저 스토리 → 제외 범위 → 인수조건 순으로, `[BE]` 인수조건 위주로 읽는다. 사용자 피드백은 `feedback/`(git 제외)에 메모한다.
-3. PM이 Milestone `v0.1 MVP`, Epic(docs 레포)·작업 이슈 생성
+PRD(00~07, `prd/seed/`)와 디자인 토큰(`design/tokens.md`, 미리보기 `design/preview/tokens.html`)은 확정·커밋됐다. 결정 필요 TBD는 없다.
+
+1. PM이 Milestone `v0.1 MVP`, Epic(docs 레포)·작업 이슈 생성 → 사용자 검토
+   - 읽을 것: 4장(이슈 구조·라벨·Issue type), `prd/README.md`(Epic 1~7 매핑), 각 기능 문서의 인수조건(`[FE]`·`[BE]`·`[공통]` 태그)
+   - 먼저 할 것: 4개 레포(docs·api·web·infra)에 라벨 세트(`area:*`, `priority:*`) 생성, org Issue type(`Epic`/`Feature`/`Bug`/`Task`) 확인, `prd/README.md` 머리의 상태 문구를 확정 상태로 갱신
+   - 정할 것: Epic 1~7의 우선순위, 인수조건을 `[FE]`(web)·`[BE]`(api)·`[INFRA]`(infra) 작업 이슈로 나누는 단위(이슈 하나에 AC 몇 개). 작업 이슈 본문에 AC ID를 그대로 인용한다
+   - 확인할 것(4장 "세팅 시 확인 필요", 8장): 다른 레포 간 sub-issue 연결 가능 여부(첫 Epic에서 확인, 안 되면 Epic 본문 체크리스트), GitHub MCP로 Projects 보드 조작 가능 여부
+   - 이슈 생성은 GitHub에 바로 반영되므로, PM이 이슈 목록 초안을 먼저 보이고 사용자 승인 후 생성한다
+2. designer가 화면 흐름·화면 스펙 작성 (Epic 생성 이후). 산출물마다 `design/preview/`에 미리보기 HTML을 함께 만든다
