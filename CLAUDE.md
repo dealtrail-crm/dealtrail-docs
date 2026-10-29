@@ -84,6 +84,7 @@ workspace/
 - 사용자는 Windows와 macOS 양쪽에서 작업한다.
   - OS마다 명령이 다르면 **Windows(PowerShell)와 macOS(zsh)를 모두** 제시한다.
   - 프로젝트 스크립트·설정(빌드, 실행, CI)은 두 OS에서 모두 동작해야 한다. 한쪽 OS 전용 경로 구분자·셸 문법·도구에 의존하지 않는다.
+  - 모든 레포는 `.gitattributes`(`* text=auto eol=lf`, `*.ps1`·`*.bat`·`*.cmd`만 CRLF)와 `.editorconfig`(`end_of_line = lf`)로 줄바꿈을 LF로 고정한다. 새 레포는 첫 커밋에 포함한다.
 - 실제 AWS 리소스를 만들거나 바꾸는 명령(`terraform apply` 등)은 실행하지 않고 사용자 승인을 받는다.
 - GitHub MCP 토큰은 `--scope user`로 등록한다. 프로젝트 `.mcp.json`에 토큰을 넣지 않는다.
 
