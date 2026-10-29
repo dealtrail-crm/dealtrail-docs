@@ -28,8 +28,8 @@ Account(거래 대상 회사)와 Contact(그 회사의 담당자)는 Opportunity
 - [ ] `AC-ACC-03` [FE] Account 상세는 기본 정보, 소속 Contact 목록, 연결된 Opportunity 목록(단계·금액 포함)을 보여 준다. TBD-8 결정에 따라 활동 목록도 둔다.
 - [ ] `AC-ACC-04` [공통] Account를 직접 생성·수정할 수 있다. 회사명이 비면 거부된다.
 - [ ] `AC-ACC-05` [BE] 연결된 Opportunity가 하나라도 있는 Account는 삭제할 수 없고, 거부 사유에 "연결된 Opportunity가 있음"이 포함된다. Contact만 있는 Account를 삭제하면 소속 Contact도 함께 삭제된다. (삭제 정책은 FE가 삭제 전 확인 문구에 그대로 표시한다)
-- [ ] `AC-ACC-06` [BE] Lead 전환으로 만들어진 Account는 "어느 Lead에서 왔는지"를 알 수 있다. 직접 만든 Account는 그 정보가 비어 있다.
-- [ ] `AC-ACC-07` [공통] 같은 작업 공간 안에서 회사명이 중복되는 Account 생성은 **허용**한다 (MVP에서는 중복 감지 없음). 직접 생성과 Lead 전환으로 생성되는 경우 모두 같다 (`02-lead.md` §4). 단, FE는 등록 폼에서 같은 이름의 Account가 있으면 안내만 한다.
+- [ ] `AC-ACC-06` [BE] Lead 전환의 "새 Account 만들기"로 만들어진 Account는 "어느 Lead에서 왔는지"를 알 수 있다. 직접 만든 Account는 그 정보가 비어 있다. Lead 전환에서 기존 Account를 선택해도 그 Account의 이 정보는 바뀌지 않는다 (`02-lead.md` `AC-LD-11`).
+- [ ] `AC-ACC-07` [공통] 같은 작업 공간 안에서 회사명이 중복되는 Account 생성은 **허용**한다 (MVP에서는 자동 중복 감지 없음). 직접 생성과 Lead 전환의 "새 Account 만들기" 모두 같다 (`02-lead.md` §4). 단, FE는 같은 이름의 Account가 있으면 등록 폼에서는 안내만 하고 저장을 막지 않으며, Lead 전환 화면(`02-lead.md` `AC-LD-10`)에서는 안내와 함께 그 Account를 "기존 Account 선택"으로 바꾸는 진입점을 보여 주되 새로 만들기를 유지하면 전환을 막지 않는다.
 
 ### 3.2 Contact
 
@@ -51,7 +51,7 @@ Account(거래 대상 회사)와 Contact(그 회사의 담당자)는 Opportunity
 
 - Account 계층(모회사·자회사), Account 간 관계
 - Contact 역할(결정권자·실무자 등) 분류, 한 Contact가 여러 Account에 소속
-- 중복 감지·병합 (Lead 전환으로 같은 회사의 Account가 거듭 생기는 경우 포함, `02-lead.md` §4)
+- 자동 중복 감지·병합 (Lead 전환에서 "새 Account 만들기"를 유지해 같은 회사의 Account가 거듭 생기는 경우 포함, `02-lead.md` §4)
 - 파일 첨부, 명함 스캔
 - 대량 가져오기(CSV)
 - Account·Contact 삭제 복구

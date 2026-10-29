@@ -54,7 +54,7 @@ HANDOFF 0장의 정의를 그대로 쓰고, PRD에서 쓰는 보조 용어를 �
 | **예시 데이터 (Seed)** | 작업 공간 생성 시 업종에 맞춰 미리 넣어 두는 Lead·Account·Contact·Opportunity·Activity |
 | **Lead** | 아직 검증되지 않은 잠재 고객. 회사명·담당자명·연락처 정도의 정보 |
 | **검증 (Qualify)** | Lead가 영업 가치가 있다고 표시하는 행위. Lead 상태는 신규·진행 중·검증됨·전환됨·제외 (`02-lead.md` §3.2) |
-| **전환 (Convert)** | 검증된 Lead로부터 Account + Contact + Opportunity를 한 번에 만드는 행위. 전환 후 Lead는 더 이상 수정하지 않는다 |
+| **전환 (Convert)** | 검증된 Lead로부터 Account + Contact + Opportunity를 한 번에 만드는 행위. Account는 새로 만들거나 같은 작업 공간의 기존 Account를 선택할 수 있고, Contact·Opportunity는 항상 새로 만든다. 전환 후 Lead는 더 이상 수정하지 않는다 |
 | **Account** | 거래 대상 회사 |
 | **Contact** | Account에 속한 담당자 |
 | **Opportunity** | 진행 중인 영업 건. 금액, 단계, 예상 마감일을 가진다 |
@@ -146,7 +146,7 @@ Workspace 1 ─── * Lead
                               * ─── 0..1 Contact (주 담당자)
                               1 ─── * StageHistory
           1 ─── * Activity ─── 대상(TBD-8)
-Lead(전환됨) ─── 1 Account, 1 Contact, 1 Opportunity (전환으로 생성된 것)
+Lead(전환됨) ─── 1 Account(새로 만든 것 또는 선택한 기존 것), 1 Contact, 1 Opportunity (전환으로 연결·생성된 것)
 ```
 
 저장 구조·키 설계는 PRD 범위가 아니다 (사용자 결정, 필요 시 ADR).
