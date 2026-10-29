@@ -66,14 +66,19 @@
 | 프론트엔드 | Next.js |
 | 백엔드 | Java Spring (필요 시 NestJS 사용 가능). **Spring Boot 4.1.2 / Java 21 / Gradle**. group `com.dealtrail`, 패키지 `com.dealtrail.api` |
 | DB | PostgreSQL |
-| 배포 | AWS. **EKS 사용 안 함** (개인 프로젝트라 비용 문제) |
+| 배포 | AWS 서울 리전(`ap-northeast-2`). **EC2 한 대(t4g.small) + Docker Compose + Caddy**. EKS·ECS·쿠버네티스 사용 안 함 |
 
-### 인프라 원칙
+### 인프라 구성
 
-- 이 프로젝트에서 사용자는 **AWS와 Terraform을 잘 모르는 사람**으로 가정한다.
-- 어려운 기술은 쓰지 않는다. 쿠버네티스는 쉽고 비용이 들지 않는 경우에만 고려하고, 아니면 EC2 또는 ECS 수준으로 간단히 간다.
-- 현재 의견: 운영 난이도 때문에 쿠버네티스(k3s 포함)는 제외하는 쪽이 낫다. 비용상 "EC2 한 대 + Docker Compose"가 가장 저렴·단순하고, ECS(Fargate)는 관리가 편하지만 로드밸런서 등 월 고정비가 생긴다.
-- **최종 선택은 인프라 에이전트가 비용 비교표와 함께 제안하고 사용자가 결정한다.**
+- 이 프로젝트에서 사용자는 **AWS와 Terraform을 잘 모르는 사람**으로 가정한다. 어려운 기술은 쓰지 않는다.
+- **배포**: EC2 한 대에 Docker Compose로 web·api·DB를 띄우고, Caddy가 HTTPS 종료와 경로 라우팅(`/api/*` → Spring, 나머지 → Next.js)을 맡는다. 예상 월 비용 약 $22 (ECS Fargate + ALB + RDS 구성의 약 1/3).
+- **DB**: 같은 EC2 안의 PostgreSQL 컨테이너 + 매일 EBS 스냅샷 7일 보관. RDS는 쓰지 않는다.
+- **파일 위치**: Dockerfile과 짧은 CI 호출 워크플로는 각 앱 레포(api 레포 파일은 사용자가 커밋), 재사용 워크플로·운영/로컬 Compose·Caddyfile·Terraform은 infra 레포.
+- **이미지 저장소**: GHCR (public). 이미지에 비밀값을 넣지 않는다.
+- **방문자 IP**: Caddy가 실제 접속 IP로 `X-Forwarded-For`를 다시 쓰고, Spring은 `server.forward-headers-strategy=native`로 내부 프록시만 신뢰한다. 보안 그룹은 80·443만 연다. 테스트 계정 대여·회원가입 요청은 브라우저가 `/api`를 직접 호출한다 (Next.js 서버 경유 시 방문자 IP를 잃음).
+- **정리 배치**: 앱 안 스케줄러(Spring `@Scheduled`). 외부 트리거를 두지 않는다.
+- **도메인**: 새로 구매. **AWS 계정**: 새로 생성, Paid plan + 예산 알림(월 $30)을 가장 먼저 만든다.
+- 재검토 조건: 서버 한 대로 부족해지거나 무중단 배포가 필요해지면 ECS로 옮긴다.
 
 ## 2. 에이전트 구성과 역할
 
@@ -107,6 +112,7 @@
   - "AWS·Terraform을 모르는 사람"에게 설명하는 톤이 기본.
   - 변경마다 예상 비용을 함께 제시.
   - `terraform apply` 등 실제 리소스를 생성·변경하는 명령은 직접 실행하지 않고 사용자의 승인을 받는다.
+  - 사용자가 인프라를 학습할 수 있도록 결정과 작업마다 **학습 가이드**를 infra 레포 `docs/learning/`에 작성한다.
 - **senior-backend (리뷰)**
   - 관점: 코드 가독성, 유지보수성, 동시성 문제, 트랜잭션, 배포 영향 등 시니어가 주니어에게 해줄 수 있는 조언.
   - 필요하면 코드 개선 제안까지 한다.
@@ -187,12 +193,12 @@ claude --add-dir ../{프로젝트명}-api ../{프로젝트명}-web ../{프로젝
 
 - **Milestone**: 출시 단위 (예: `v0.1 MVP`)
 - **Epic 이슈**: PRD의 기능 하나. **docs 레포**에 생성. PM이 생성.
-- **작업 이슈**: 코드가 바뀌는 레포에 생성. `[FE]` → web, `[BE]` → api, `[INFRA]` → infra.
+- **작업 이슈**: 코드가 바뀌는 레포에 생성. `[FE]` → web, `[BE]` → api, `[INFRA]` → infra, `[DOCS]` → docs(API 계약 등 문서 작업).
 - **Issue type** (org 단위 GitHub Issue types): `Epic` / `Feature` / `Bug` / `Task`
   - chore·문서 작업은 `Task`로 묶는다. `Epic`은 docs 레포의 Epic 이슈에만 쓴다.
   - 종류를 라벨(`type:*`)로 표시하지 않는다.
 - **Label**
-  - 영역: `area:web` / `area:api` / `area:infra` / `area:design`
+  - 영역: `area:web` / `area:api` / `area:infra` / `area:design` / `area:docs`(API 계약·PRD·디자인 문서 등 문서 작업)
   - 우선순위: `priority:high` / `priority:medium` / `priority:low`. PM이 정하고, 조정이 필요하면 사용자가 PM에게 요청한다.
   - 라벨은 레포 단위라 docs·api·web·infra 4개 레포에 같은 세트를 만든다.
 - **조직 단위 GitHub Projects 보드** 하나로 전 레포 이슈를 칸반(할 일 / 진행 중 / 리뷰 중 / 완료)으로 본다.
@@ -211,10 +217,34 @@ PM: PRD 작성 → Epic + 작업 이슈 생성 (각 이슈에 인수조건 포�
 
 - 백엔드 이슈(`area:api`)는 사용자가 직접 가져가 같은 규칙으로 브랜치·PR을 만들고, senior-backend가 PR 코멘트로 리뷰한다.
 
-### 세팅 시 확인 필요
+### 작업 이슈 작성 규칙
 
-- [ ] 다른 레포 간 sub-issue 연결이 되는지. 안 되면 Epic 본문에 체크리스트로 작업 이슈 링크. → PM이 만드는 첫 Epic에서 확인
-- [ ] GitHub MCP로 Projects 보드 조작이 되는지. 안 되면 `status:in-progress` 같은 라벨로 상태 관리.
+- **분할**: AC 2~4개당 이슈 하나. 화면·기능 경계상 예외가 필요하면 이유를 이슈 본문 "비고"에 적는다. 같은 PR로 끝나는 이슈가 많아 부담되면 사용자 요청 시 PM이 합친다.
+- **설명 포인트**: 이슈 하나에 설명 포인트 두 개를 섞지 않는다. 포인트별 "핵심 이슈" 하나를 정해 Epic 본문에 표시하고, ADR·트러블슈팅은 그 이슈를 가리킨다. 핵심 이슈 본문에는 "구현 시 결정할 것"을 둔다.
+- **AC 인용**: 이슈 본문에 AC ID를 그대로 인용하고 PRD 원문은 링크로 대신한다. `[공통]` AC는 FE·BE 양쪽 이슈에 같은 ID를 인용하고 줄 끝 괄호에 담당 부분을 적는다. 엔티티별 격리 AC는 격리 교차 검증 이슈에만 인용한다.
+- **선행 관계**: 이슈 본문에 선행 이슈 번호를 적는다.
+- **라벨**: Epic에는 하위 작업 이슈가 있는 영역의 area 라벨을 모두 붙인다. 작업 이슈의 priority는 Epic과 다를 수 있다(다른 Epic의 선행이면 올린다).
+- **인프라 이슈**: Epic 없이 Milestone에만 연결한다. 본문 "관련 문서"에 HANDOFF 절·관련 AC ID·ADR 링크를 넣고, 완료 조건에 학습 가이드(infra 레포 `docs/learning/`) 작성을 넣는다.
+- **API 계약 이슈**: docs 레포 `[DOCS]` Task, `area:docs`. 공통 규약 1개(Epic 없음) + Epic별 계약(해당 Epic의 sub-issue). 작성 순서: 공통 → Epic 1 → 3 → 4 → 2 → 5 → 6 → 7.
+
+### 이슈 생성 도구
+
+- `gh issue create --repo … --title --body-file --label --milestone --type <Epic|Feature|Task> --project "Dealtrail Issue Tracker"`
+  - Project 쪽 자동 추가와 `--project`가 겹치면 "Content already exists in this project" 오류로 gh가 type 지정 전에 멈출 수 있다. 생성 뒤 type·project를 따로 검증·보정한다 (type: `gh api graphql` `updateIssue(issueTypeId)` 또는 MCP `issue_write`, project: `gh project item-add`).
+- 레포 간 sub-issue 연결 가능: `gh api -X POST repos/dealtrail-crm/<Epic 레포>/issues/<Epic번호>/sub_issues -F sub_issue_id=<하위 이슈의 .id>`. Epic 본문 체크리스트는 보조로 둔다.
+- GitHub MCP에는 Projects 도구가 없다. 보드 조작은 gh로 한다.
+
+### 설명 포인트별 핵심 이슈
+
+| 설명 포인트 | 핵심 이슈 | 관련 이슈 |
+|---|---|---|
+| 테스트 계정 동시 대여 경쟁 | dealtrail-api#4 | api#3, api#5 |
+| 작업 공간 생성·시드 | dealtrail-api#8 | api#7, api#9 |
+| 작업 공간 격리 | dealtrail-api#11 | api#12 |
+| 만료 대여 정리 배치 | dealtrail-api#13 | api#6 |
+| Lead 전환 트랜잭션 | dealtrail-api#16 | api#17, api#18 |
+| 단계 상태 머신 + 이력 | dealtrail-api#26 | api#27 |
+| 파이프라인 집계 | 초안 B33 (미생성) | api#28, 초안 B34 (미생성) |
 
 ## 5. Git 규칙
 
@@ -286,17 +316,24 @@ fix(api): 동시 주문 시 재고 음수 문제 수정 (#31)
 
 ## 8. 미결정 사항
 
-- [ ] 배포 방식 (EC2 + Docker Compose vs ECS) → infra 에이전트가 비용 비교 후 제안
-- [ ] 4장 세팅 시 확인 항목 (sub-issue 연결, Projects 보드 조작)
+없음.
 
 ## 9. 다음 단계
 
-PRD(00~07, `prd/seed/`)와 디자인 토큰(`design/tokens.md`, 미리보기 `design/preview/tokens.html`)은 확정·커밋됐다. 결정 필요 TBD는 없다.
+PRD(00~07, `prd/seed/`)·디자인 토큰·인프라 구성(1장)은 확정됐다. 이슈 생성은 중간에 멈춘 상태다.
 
-1. PM이 Milestone `v0.1 MVP`, Epic(docs 레포)·작업 이슈 생성 → 사용자 검토
-   - 읽을 것: 4장(이슈 구조·라벨·Issue type), `prd/README.md`(Epic 1~7 매핑), 각 기능 문서의 인수조건(`[FE]`·`[BE]`·`[공통]` 태그)
-   - 먼저 할 것: 4개 레포(docs·api·web·infra)에 라벨 세트(`area:*`, `priority:*`) 생성, org Issue type(`Epic`/`Feature`/`Bug`/`Task`) 확인, `prd/README.md` 머리의 상태 문구를 확정 상태로 갱신
-   - 정할 것: Epic 1~7의 우선순위, 인수조건을 `[FE]`(web)·`[BE]`(api)·`[INFRA]`(infra) 작업 이슈로 나누는 단위(이슈 하나에 AC 몇 개). 작업 이슈 본문에 AC ID를 그대로 인용한다
-   - 확인할 것(4장 "세팅 시 확인 필요", 8장): 다른 레포 간 sub-issue 연결 가능 여부(첫 Epic에서 확인, 안 되면 Epic 본문 체크리스트), GitHub MCP로 Projects 보드 조작 가능 여부
-   - 이슈 생성은 GitHub에 바로 반영되므로, PM이 이슈 목록 초안을 먼저 보이고 사용자 승인 후 생성한다
-2. designer가 화면 흐름·화면 스펙 작성 (Epic 생성 이후). 산출물마다 `design/preview/`에 미리보기 HTML을 함께 만든다
+1. PM이 남은 이슈 생성을 이어서 끝낸다
+   - 이미 생성: 4개 레포 `area:docs` 라벨, Milestone `v0.1 MVP`(각 레포 #1), docs#1~#15(Epic 7 + `[DOCS]` 계약 8), api#1~#28(초안 B01~B28, 번호 일치)
+   - 읽을 것: `issue-draft.md`(초안 전체), `issue-work/`(이슈 본문 `KEY.md`, `manifest.txt` 생성 목록, `map.txt` 초안 키→실제 번호, `partial.txt` 보정 대상, `types.txt` Issue type 노드 ID, `*.sh` 생성 스크립트. 스크립트는 Windows scratchpad 경로 기준이라 경로를 바꿔 쓴다), 4장 "이슈 생성 도구"
+   - 순서:
+     1. 보정: docs#5·#7 type `Epic`, api#28 type `Feature` + Project 추가
+     2. `manifest.txt` 중 `map.txt`에 없는 키 생성: api B29~B36, web F01~F18·F20~F24, infra IN0~IN7. Epic 단위로 짧게 돌린다. 중복 확인은 `jq --arg`로 제목을 넘긴다(제목에 `"`가 든 이슈에서 문자열 삽입이 깨졌다)
+     3. 치환 패스: 모든 본문의 `{{KEY}}`를 `map.txt` 기준 `dealtrail-crm/<repo>#<n>`으로 바꿔 `gh issue edit --body-file`. 끝나면 `{{` 잔존 검사
+     4. sub-issue 연결: Epic 1~7 ← 해당 BE·FE·계약 이슈 (공통 규약 docs#8과 인프라 이슈는 Epic 없음). 매핑은 `issue-work/E*.md`
+     5. `.github` 레포 Task·Feature 템플릿 주석에 `[DOCS] docs 레포 (API 계약·디자인 등 문서 작업)` 추가
+     6. 4장 "설명 포인트별 핵심 이슈" 표의 집계 행을 실제 번호로 갱신
+   - 끝나면 `issue-draft.md`와 `issue-work/`를 삭제·커밋한다
+2. senior-backend가 API 계약 공통 규약(docs#8)부터 작성 → frontend 검토 → 사용자 승인. 이어서 Epic 1 계약(docs#9)
+   - 1장 조건 반영: 테스트 계정 대여·회원가입은 브라우저가 `/api`를 직접 호출
+3. designer가 화면 흐름·화면 스펙 작성. 산출물마다 `design/preview/`에 미리보기 HTML을 함께 만든다
+4. infra가 IN0(인프라 구성 결정 학습 가이드)·IN1(로컬 Compose) 착수. AWS 계정 생성(Paid plan, 예산 알림 먼저)과 도메인 구매는 사용자
