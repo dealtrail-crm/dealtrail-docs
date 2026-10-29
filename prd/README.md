@@ -16,6 +16,7 @@
 | [`06-dashboard.md`](./06-dashboard.md) | 대시보드 (단계별 금액, 수주율) | Epic 6 |
 | [`07-member.md`](./07-member.md) | 회원 계정: 아이디·비밀번호 가입, 로그인, 영구 보관, 가입 남용 방지 | Epic 7 |
 | [`99-decisions-tbd.md`](./99-decisions-tbd.md) | 결정 필요 항목(TBD) 목록, 후보, 장단점, PM 추천 | (문서) |
+| [`seed/`](./seed/README.md) | 업종별 예시 데이터 명세: 공통 규칙(`README.md`), 제조(`manufacturing.md`), IT·소프트웨어(`it-software.md`), 전문 서비스(`professional-services.md`). 규모·분포의 근거는 01 §3.4.1 | (Epic 1의 부속 문서) |
 
 ## 기능 문서의 공통 형식
 
