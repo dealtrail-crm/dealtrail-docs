@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dealtrail 디자인 토큰 미리보기</title>
+<style>
+/* 값은 design/tokens.md 6장과 같다. 이 파일만 열어도 보이도록 CDN 없이 인라인 정의한다. */
+:root {
+  --dt-neutral-0: #FFFFFF;
+  --dt-neutral-50: #F5F6F8;
+  --dt-neutral-100: #ECEEF2;
+  --dt-neutral-200: #DDE0E6;
+  --dt-neutral-300: #C4C9D2;
+  --dt-neutral-400: #878E9C;
+  --dt-neutral-500: #646B79;
+  --dt-neutral-600: #525967;
+  --dt-neutral-700: #3D434F;
+  --dt-neutral-800: #272C36;
+  --dt-neutral-900: #171A21;
+
+  --dt-indigo-50: #F1F0FE;
+  --dt-indigo-100: #E3E1FC;
+  --dt-indigo-200: #C9C5F8;
+  --dt-indigo-300: #A7A1F2;
+  --dt-indigo-400: #8079E8;
+  --dt-indigo-500: #6159DB;
+  --dt-indigo-600: #4C43C6;
+  --dt-indigo-700: #3D35A6;
+  --dt-indigo-800: #322C85;
+  --dt-indigo-900: #28246A;
+
+  --dt-violet-50: #F7F1FE;
+  --dt-violet-500: #9A4FDB;
+  --dt-violet-600: #8338C4;
+  --dt-violet-700: #6E2BA6;
+
+  --dt-teal-50: #EDFAF8;
+  --dt-teal-600: #0D7C71;
+  --dt-teal-700: #0B655D;
+
+  --dt-green-50: #EEF9F1;
+  --dt-green-600: #18823A;
+  --dt-green-700: #146A30;
+
+  --dt-amber-50: #FFF8EB;
+  --dt-amber-600: #B26A05;
+  --dt-amber-700: #8F5207;
+
+  --dt-red-50: #FEF2F2;
+  --dt-red-600: #C02929;
+  --dt-red-700: #9E2121;
+}
+:root {
+  color-scheme: light;
+  --dt-canvas: var(--dt-neutral-50);
+  --dt-surface: var(--dt-neutral-0);
+  --dt-surface-muted: var(--dt-neutral-100);
+  --dt-surface-hover: var(--dt-neutral-50);
+  --dt-surface-selected: var(--dt-indigo-50);
+  --dt-overlay: rgb(23 26 33 / 0.5);
+
+  --dt-fg: var(--dt-neutral-900);
+  --dt-fg-muted: var(--dt-neutral-600);
+  --dt-fg-subtle: var(--dt-neutral-500);
+  --dt-fg-disabled: var(--dt-neutral-400);
+  --dt-fg-on-accent: var(--dt-neutral-0);
+  --dt-fg-link: var(--dt-indigo-600);
+
+  --dt-line: var(--dt-neutral-200);
+  --dt-line-strong: var(--dt-neutral-400);
+  --dt-focus: var(--dt-indigo-500);
+
+  --dt-accent: var(--dt-indigo-600);
+  --dt-accent-hover: var(--dt-indigo-700);
+  --dt-accent-bg: var(--dt-indigo-50);
+  --dt-accent-fg: var(--dt-indigo-700);
+
+  --dt-success: var(--dt-green-600);
+  --dt-success-bg: var(--dt-green-50);
+  --dt-success-fg: var(--dt-green-700);
+  --dt-warning: var(--dt-amber-600);
+  --dt-warning-bg: var(--dt-amber-50);
+  --dt-warning-fg: var(--dt-amber-700);
+  --dt-danger: var(--dt-red-600);
+  --dt-danger-hover: var(--dt-red-700);
+  --dt-danger-bg: var(--dt-red-50);
+  --dt-danger-fg: var(--dt-red-700);
+  --dt-info: var(--dt-indigo-600);
+  --dt-info-bg: var(--dt-indigo-50);
+  --dt-info-fg: var(--dt-indigo-700);
+
+  --dt-stage-discovery: var(--dt-indigo-400);
+  --dt-stage-discovery-bg: var(--dt-indigo-50);
+  --dt-stage-discovery-fg: var(--dt-indigo-700);
+  --dt-stage-proposal: var(--dt-indigo-600);
+  --dt-stage-proposal-bg: var(--dt-indigo-100);
+  --dt-stage-proposal-fg: var(--dt-indigo-800);
+  --dt-stage-negotiation: var(--dt-indigo-800);
+  --dt-stage-negotiation-bg: var(--dt-indigo-200);
+  --dt-stage-negotiation-fg: var(--dt-indigo-900);
+  --dt-stage-won: var(--dt-green-600);
+  --dt-stage-won-bg: var(--dt-green-50);
+  --dt-stage-won-fg: var(--dt-green-700);
+  --dt-stage-lost: var(--dt-neutral-500);
+  --dt-stage-lost-bg: var(--dt-neutral-100);
+  --dt-stage-lost-fg: var(--dt-neutral-600);
+
+  --dt-lead-new: var(--dt-indigo-500);
+  --dt-lead-new-bg: var(--dt-indigo-50);
+  --dt-lead-new-fg: var(--dt-indigo-700);
+  --dt-lead-working: var(--dt-violet-500);
+  --dt-lead-working-bg: var(--dt-violet-50);
+  --dt-lead-working-fg: var(--dt-violet-700);
+  --dt-lead-qualified: var(--dt-teal-600);
+  --dt-lead-qualified-bg: var(--dt-teal-50);
+  --dt-lead-qualified-fg: var(--dt-teal-700);
+  --dt-lead-converted: var(--dt-green-600);
+  --dt-lead-converted-bg: var(--dt-green-50);
+  --dt-lead-converted-fg: var(--dt-green-700);
+  --dt-lead-excluded: var(--dt-neutral-400);
+  --dt-lead-excluded-bg: var(--dt-neutral-100);
+  --dt-lead-excluded-fg: var(--dt-neutral-600);
+
+  --dt-activity-call: var(--dt-teal-600);
+  --dt-activity-call-bg: var(--dt-teal-50);
+  --dt-activity-call-fg: var(--dt-teal-700);
+  --dt-activity-meeting: var(--dt-violet-600);
+  --dt-activity-meeting-bg: var(--dt-violet-50);
+  --dt-activity-meeting-fg: var(--dt-violet-700);
+  --dt-activity-task: var(--dt-amber-600);
+  --dt-activity-task-bg: var(--dt-amber-50);
+  --dt-activity-task-fg: var(--dt-amber-700);
+
+  --dt-overdue: var(--dt-red-600);
+  --dt-overdue-bg: var(--dt-red-50);
+  --dt-overdue-fg: var(--dt-red-700);
+  --dt-due-today: var(--dt-amber-600);
+  --dt-due-today-bg: var(--dt-amber-700);
+  --dt-due-today-fg: var(--dt-neutral-0);
+  --dt-owner-left: var(--dt-amber-600);
+  --dt-owner-left-bg: var(--dt-amber-50);
+  --dt-owner-left-fg: var(--dt-amber-700);
+  --dt-coming-soon-bg: var(--dt-neutral-100);
+  --dt-coming-soon-fg: var(--dt-neutral-600);
+  --dt-contact-left-bg: var(--dt-neutral-100);
+  --dt-contact-left-fg: var(--dt-neutral-600);
+  --dt-unavailable: var(--dt-neutral-500);
+
+  --dt-shadow-xs: 0 1px 2px rgb(23 26 33 / 0.06);
+  --dt-shadow-sm: 0 1px 3px rgb(23 26 33 / 0.10), 0 1px 2px rgb(23 26 33 / 0.06);
+  --dt-shadow-md: 0 4px 12px -2px rgb(23 26 33 / 0.12), 0 2px 4px -2px rgb(23 26 33 / 0.06);
+  --dt-shadow-lg: 0 12px 32px -4px rgb(23 26 33 / 0.18), 0 4px 8px -4px rgb(23 26 33 / 0.08);
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+}
+
+/* ── 미리보기 페이지 자체의 배치 (토큰 아님) ── */
+* { box-sizing: border-box; }
+html { font-family: var(--font-sans); background: var(--dt-canvas); color: var(--dt-fg); }
+body { margin: 0; padding: 32px 16px 64px; font-size: 14px; line-height: 1.5; }
+main { max-width: 1080px; margin: 0 auto; }
+h1 { font-size: 30px; line-height: 1.3; letter-spacing: -0.02em; margin: 0 0 4px; }
+h2 { font-size: 20px; line-height: 1.4; letter-spacing: -0.01em; margin: 48px 0 4px; }
+h3 { font-size: 16px; margin: 24px 0 8px; }
+p.lead, p.note { color: var(--dt-fg-muted); margin: 0 0 16px; }
+p.note { font-size: 12px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+.panel { background: var(--dt-surface); border: 1px solid var(--dt-line); border-radius: 8px; padding: 16px; box-shadow: var(--dt-shadow-xs); }
+.grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* 팔레트 */
+.palette { display: grid; grid-template-columns: 90px repeat(11, minmax(0, 1fr)); gap: 4px; align-items: stretch; }
+.palette .name { font-weight: 500; align-self: center; }
+.chip { border-radius: 4px; min-height: 56px; padding: 4px; font-size: 11px; line-height: 1.3; display: flex; flex-direction: column; justify-content: flex-end; border: 1px solid rgb(23 26 33 / 0.06); }
+.chip.empty { background: transparent; border: 1px dashed var(--dt-line); }
+@media (max-width: 760px) {
+  .palette { grid-template-columns: 70px repeat(11, 64px); overflow-x: auto; }
+  .palette-wrap { overflow-x: auto; }
+}
+
+/* 의미 색 견본 */
+.swatch { border: 1px solid var(--dt-line); border-radius: 8px; overflow: hidden; background: var(--dt-surface); }
+.swatch .sample { height: 64px; display: flex; align-items: center; justify-content: center; font-weight: 500; }
+.swatch .meta { padding: 8px 12px; font-size: 12px; }
+.swatch .meta div { display: flex; justify-content: space-between; gap: 8px; }
+.swatch .meta .tk { font-weight: 600; font-size: 13px; }
+.pass { color: var(--dt-success-fg); font-weight: 600; }
+.fail { color: var(--dt-danger-fg); font-weight: 600; }
+
+/* 표 */
+table { width: 100%; border-collapse: collapse; background: var(--dt-surface); }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--dt-line); vertical-align: middle; }
+th { background: var(--dt-surface-muted); font-weight: 500; font-size: 12px; color: var(--dt-fg-muted); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--dt-line); border-radius: 8px; }
+
+/* 색 확인용 배지 샘플 (컴포넌트 정의 아님) */
+.badge { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 12px; line-height: 1.5; font-weight: 500; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 9999px; vertical-align: middle; margin-right: 6px; }
+.act { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; }
+.act .ic { width: 28px; height: 28px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; }
+.act svg { width: 16px; height: 16px; }
+
+/* 차트 막대 샘플 */
+.bars { display: flex; align-items: flex-end; gap: 16px; height: 160px; padding-top: 8px; }
+.bars .bar { width: 64px; border-radius: 4px 4px 0 0; }
+.bars figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; }
+
+/* 간격·라운드·그림자 */
+.space-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+.space-row .bar { height: 12px; background: var(--dt-stage-discovery); border-radius: 2px; }
+.space-row .lbl { width: 90px; font-size: 12px; color: var(--dt-fg-muted); }
+.box { background: var(--dt-surface); border: 1px solid var(--dt-line); height: 80px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--dt-fg-muted); text-align: center; }
+.shadow-box { background: var(--dt-surface); border-radius: 8px; height: 88px; display: flex; align-items: center; justify-content: center; font-size: 12px; text-align: center; }
+.shadow-stage { background: var(--dt-canvas); padding: 24px; border-radius: 8px; }
+
+.font-status { font-size: 12px; color: var(--dt-fg-subtle); }
+</style>
+</head>
+<body>
+<main>
+
+<h1>dealtrail 디자인 토큰 미리보기</h1>
+<p class="lead">design/tokens.md의 값을 그대로 옮긴 확인용 페이지다. 라이트 모드만 있다. 배지·막대는 색 확인용 샘플이며 컴포넌트 정의가 아니다.</p>
+<p class="note" id="font-status">글꼴 확인 중...</p>
+
+<!-- 1. 원시 팔레트 -->
+<h2>1. 원시 팔레트</h2>
+<p class="lead">의미 토큰이 참조하는 값. 화면 코드에서 직접 쓰지 않는다.</p>
+<div class="panel palette-wrap"><div class="palette" id="palette"></div></div>
+
+<!-- 2. 의미 색 -->
+<h2>2. 기본 의미 토큰</h2>
+<p class="lead">각 견본의 대비값은 페이지가 CSS 변수 값을 읽어 WCAG 2.x 공식으로 계산한 것이다. 글자 4.5:1, UI·그래픽 3:1 기준.</p>
+<h3>표면</h3><div class="grid" id="sw-surface"></div>
+<h3>글자</h3><div class="grid" id="sw-text"></div>
+<h3>선</h3><div class="grid" id="sw-line"></div>
+<h3>동작</h3><div class="grid" id="sw-action"></div>
+<h3>피드백</h3><div class="grid" id="sw-feedback"></div>
+
+<!-- 3. 도메인 상태 -->
+<h2>3. 도메인 상태 색</h2>
+<p class="lead">배지 글자·배경 대비와 진한 색(점·막대·아이콘)의 흰 바탕 대비.</p>
+
+<h3>Opportunity 단계</h3>
+<div class="table-wrap"><table id="tb-stage"></table></div>
+
+<h3>Lead 상태</h3>
+<div class="table-wrap"><table id="tb-lead"></table></div>
+
+<h3>활동 종류 (아이콘 + 라벨)</h3>
+<div class="table-wrap"><table id="tb-activity"></table></div>
+
+<h3>그 밖의 상태</h3>
+<div class="table-wrap"><table id="tb-misc"></table></div>
+
+<h3>수주율 계산 불가 (AC-DB-03)</h3>
+<div class="row">
+  <div class="panel" style="min-width:220px">
+    <div style="font-size:12px;color:var(--dt-fg-muted)">수주율 <span style="margin-left:4px">종료 건 기준 · 건수</span></div>
+    <div class="tnum" style="font-size:30px;line-height:1.3;font-weight:700;color:var(--dt-unavailable)">—</div>
+    <div style="font-size:12px;color:var(--dt-fg-muted)">종료된 건이 없어 계산할 수 없음</div>
+  </div>
+  <div class="panel" style="min-width:220px">
+    <div style="font-size:12px;color:var(--dt-fg-muted)">수주율 <span style="margin-left:4px">종료 건 기준 · 건수</span></div>
+    <div class="tnum" style="font-size:30px;line-height:1.3;font-weight:700;color:var(--dt-fg)">75%</div>
+    <div style="font-size:12px;color:var(--dt-fg-muted)">수주 3건 · 실패 1건</div>
+  </div>
+</div>
+<p class="note">비교용: 오른쪽은 계산 가능한 경우. 설명 문구는 컴포넌트 스펙에서 확정한다.</p>
+
+<h3>단계별 금액 막대 (색 확인용)</h3>
+<div class="panel">
+  <div class="bars">
+    <figure><div class="bar" style="height:60px;background:var(--dt-stage-discovery)"></div><span>발굴</span><span class="tnum">8,500만 원</span></figure>
+    <figure><div class="bar" style="height:110px;background:var(--dt-stage-proposal)"></div><span>제안</span><span class="tnum">1억 6,000만 원</span></figure>
+    <figure><div class="bar" style="height:80px;background:var(--dt-stage-negotiation)"></div><span>협상</span><span class="tnum">1억 2,000만 원</span></figure>
+  </div>
+  <p class="note" style="margin-top:8px">막대끼리 대비는 3:1 미만(발굴↔제안 1.99:1, 제안↔협상 1.59:1)이라 간격과 글자 라벨을 둔다 (tokens.md 7.1).</p>
+</div>
+
+<!-- 4. 타이포그래피 -->
+<h2>4. 타이포그래피</h2>
+<div class="panel" id="type-samples"></div>
+<h3>굵기</h3>
+<div class="panel row" style="gap:24px;font-size:14px">
+  <span style="font-weight:400">400 본문 영업 건</span>
+  <span style="font-weight:500">500 라벨 영업 건</span>
+  <span style="font-weight:600">600 제목 영업 건</span>
+  <span style="font-weight:700">700 핵심 수치 영업 건</span>
+</div>
+<h3>고정폭 숫자 (tabular-nums)</h3>
+<div class="row">
+  <div class="panel" style="min-width:220px">
+    <div style="font-size:12px;color:var(--dt-fg-muted);margin-bottom:4px">tabular-nums 적용</div>
+    <div class="tnum" style="text-align:right">1억 1,111만 원<br>8,888만 원<br>5억 원</div>
+  </div>
+  <div class="panel" style="min-width:220px">
+    <div style="font-size:12px;color:var(--dt-fg-muted);margin-bottom:4px">미적용 (비교)</div>
+    <div style="text-align:right">1억 1,111만 원<br>8,888만 원<br>5억 원</div>
+  </div>
+</div>
+
+<!-- 5. 표시 형식 -->
+<h2>5. 금액·날짜 표시 형식</h2>
+<h3>금액 ("5,000만 원" 형식, 반올림 없음)</h3>
+<p class="lead">오른쪽 열은 이 페이지의 함수가 tokens.md 5.1 규칙으로 계산한 결과다. 가운데 열(문서의 기대값)과 다르면 빨갛게 표시된다.</p>
+<div class="table-wrap"><table id="tb-money"></table></div>
+<h3>금액 입력란 (예외 형식)</h3>
+<div class="panel" style="max-width:360px">
+  <label style="font-size:14px;font-weight:500;display:block;margin-bottom:4px" for="amt">금액</label>
+  <div style="display:flex;align-items:center;gap:8px">
+    <input id="amt" class="tnum" inputmode="numeric" value="50,000,000" style="flex:1;font:inherit;font-size:16px;padding:8px 12px;border:1px solid var(--dt-line-strong);border-radius:6px;background:var(--dt-surface);color:var(--dt-fg);text-align:right">
+    <span>원</span>
+  </div>
+  <div id="amt-read" class="tnum" style="font-size:12px;color:var(--dt-fg-muted);margin-top:4px"></div>
+  <p class="note" style="margin:8px 0 0">숫자를 바꿔 보면 아래 읽기 값이 바뀐다. 입력란 모양은 컴포넌트 스펙에서 정한다.</p>
+</div>
+
+<h3>날짜·시각</h3>
+<div class="table-wrap"><table>
+  <tr><th>종류</th><th>형식</th><th>예</th></tr>
+  <tr><td>날짜 (올해)</td><td><code>M월 D일</code></td><td class="tnum">11월 12일</td></tr>
+  <tr><td>날짜 (다른 해)</td><td><code>YYYY년 M월 D일</code></td><td class="tnum">2027년 1월 5일</td></tr>
+  <tr><td>일시</td><td>날짜 + <code>오전/오후 h:mm</code></td><td class="tnum">11월 12일 오후 2:30</td></tr>
+  <tr><td>머문 기간</td><td>1분 미만 <code>1분 미만</code>, 1시간 미만 <code>N분</code>, 1일 미만 <code>N시간</code>, 그 이상 <code>N일</code> (내림)</td><td>아래 표</td></tr>
+  <tr><td>남은 시간</td><td><code>H시간 M분 남음</code>, 분이 0이면 <code>H시간 남음</code>, 1시간 미만 <code>M분 남음</code>, 1분 미만 <code>1분 미만 남음</code></td><td>아래 샘플</td></tr>
+  <tr><td>건수</td><td><code>N건</code></td><td class="tnum">3건</td></tr>
+</table></div>
+<p class="note">모든 날짜·시각과 "오늘"·"지연" 판정은 한국 시간(Asia/Seoul) 고정이다.</p>
+
+<h3>할 일 기한 (날짜만, 한국 시간 기준)</h3>
+<div class="table-wrap"><table>
+  <tr><th>조건</th><th>샘플 (할 일 행)</th></tr>
+  <tr><td>기한 &gt; 오늘</td><td><span class="act"><span class="ic" style="background:var(--dt-activity-task-bg);color:var(--dt-activity-task)" data-icon="task"></span><span style="color:var(--dt-activity-task-fg)">할 일</span></span> <span style="margin-left:8px">견적 회신 확인</span> <span class="tnum" style="margin-left:8px;color:var(--dt-fg-muted)">11월 14일</span></td></tr>
+  <tr><td>기한 = 오늘</td><td><span class="act"><span class="ic" style="background:var(--dt-activity-task-bg);color:var(--dt-activity-task)" data-icon="task"></span><span style="color:var(--dt-activity-task-fg)">할 일</span></span> <span style="margin-left:8px">미팅 자료 발송</span> <span class="tnum" style="margin-left:8px;color:var(--dt-fg-muted)">10월 29일</span> <span class="badge" style="background:var(--dt-due-today-bg);color:var(--dt-due-today-fg)">오늘</span></td></tr>
+  <tr><td>기한 &lt; 오늘 (다음 날 0시부터)</td><td><span class="act"><span class="ic" style="background:var(--dt-activity-task-bg);color:var(--dt-activity-task)" data-icon="task"></span><span style="color:var(--dt-activity-task-fg)">할 일</span></span> <span style="margin-left:8px">계약 조건 정리</span> <span class="tnum" style="margin-left:8px;color:var(--dt-overdue-fg)">10월 20일</span> <span class="badge" style="background:var(--dt-overdue-bg);color:var(--dt-overdue-fg)">지연</span></td></tr>
+  <tr><td>비교: Opportunity 담당자 퇴사</td><td><span class="badge" style="background:var(--dt-owner-left-bg);color:var(--dt-owner-left-fg)">담당자 퇴사</span> <span class="note" style="margin-left:8px">연한 호박(오늘은 채운 호박)</span></td></tr>
+</table></div>
+<p class="note">할 일 행 모양은 색 확인용이다. 날짜 예시는 오늘을 10월 29일로 가정했다.</p>
+
+<h3>단계 머문 기간</h3>
+<div class="table-wrap"><table id="tb-dwell"></table></div>
+
+<h3>테스트 계정 남은 시간</h3>
+<div class="row">
+  <div class="panel" style="min-width:240px">
+    <div style="font-size:12px;color:var(--dt-fg-subtle);margin-bottom:4px">정상 (1시간 초과)</div>
+    <span class="tnum" style="color:var(--dt-fg-muted)">23시간 12분 남음</span>
+  </div>
+  <div class="panel" style="min-width:240px">
+    <div style="font-size:12px;color:var(--dt-fg-subtle);margin-bottom:4px">임박 (1시간 이하)</div>
+    <span class="tnum" style="color:var(--dt-warning-fg);display:inline-flex;align-items:center;gap:4px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--dt-warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>47분 남음</span>
+  </div>
+  <div class="panel" style="min-width:240px;background:var(--dt-canvas)">
+    <div style="font-size:12px;color:var(--dt-fg-subtle);margin-bottom:4px">임박, canvas 위</div>
+    <span class="tnum" style="color:var(--dt-warning-fg);display:inline-flex;align-items:center;gap:4px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--dt-warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>1시간 남음</span>
+  </div>
+</div>
+<p class="note" id="remain-cr"></p>
+<p class="note">팝업·모달은 없다. 회원 계정에는 남은 시간 표시가 없다.</p>
+
+<h3>수주율 반올림</h3>
+<div class="table-wrap"><table id="tb-winrate"></table></div>
+
+<h3>전화번호 (종류별 하이픈, tabular-nums)</h3>
+<p class="lead">오른쪽 열은 이 페이지의 함수가 tokens.md 5.4 규칙으로 계산한 결과다.</p>
+<div class="table-wrap"><table id="tb-phone"></table></div>
+
+<!-- 6. 간격·라운드·그림자 -->
+<h2>6. 간격·라운드·그림자</h2>
+<h3>간격 (4px 단위)</h3>
+<div class="panel" id="spacing"></div>
+
+<h3>라운드</h3>
+<div class="grid" id="radius"></div>
+
+<h3>그림자</h3>
+<div class="shadow-stage"><div class="grid" id="shadow"></div></div>
+
+<h3>포커스 링</h3>
+<div class="panel row">
+  <button style="font:inherit;font-weight:500;background:var(--dt-accent);color:var(--dt-fg-on-accent);border:0;border-radius:6px;padding:8px 16px;outline:2px solid var(--dt-focus);outline-offset:2px">체험하기 (포커스 상태)</button>
+  <button style="font:inherit;font-weight:500;background:var(--dt-danger);color:var(--dt-fg-on-accent);border:0;border-radius:6px;padding:8px 16px">초기화</button>
+  <button disabled style="font:inherit;font-weight:500;background:var(--dt-surface-muted);color:var(--dt-fg-disabled);border:0;border-radius:6px;padding:8px 16px">비활성</button>
+</div>
+<p class="note">버튼은 색 조합 확인용이다. 버튼 컴포넌트 정의는 컴포넌트 스펙에서 한다.</p>
+
+</main>
+
+<script>
+(function () {
+  var css = getComputedStyle(document.documentElement);
+  function v(name) { return css.getPropertyValue('--dt-' + name).trim(); }
+
+  function hexOf(name) {
+    var probe = document.createElement('span');
+    probe.style.color = 'var(--dt-' + name + ')';
+    document.body.appendChild(probe);
+    var rgb = getComputedStyle(probe).color;
+    document.body.removeChild(probe);
+    var m = rgb.match(/[\d.]+/g).map(Number);
+    return '#' + m.slice(0, 3).map(function (n) { return ('0' + Math.round(n).toString(16)).slice(-2); }).join('').toUpperCase();
+  }
+  function lum(hex) {
+    var c = [1, 3, 5].map(function (i) { return parseInt(hex.substr(i, 2), 16) / 255; })
+      .map(function (x) { return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  function ratio(a, b) {
+    var la = lum(a), lb = lum(b), hi = Math.max(la, lb), lo = Math.min(la, lb);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+  function verdict(r, need) {
+    if (!need) return '<span>' + r.toFixed(2) + ':1 (기준 없음)</span>';
+    var ok = r >= need;
+    return '<span class="' + (ok ? 'pass' : 'fail') + '">' + r.toFixed(2) + ':1 ' + (ok ? '통과' : '미달') + '</span>';
+  }
+  function crCell(fg, bg, need) { return verdict(ratio(hexOf(fg), hexOf(bg)), need); }
+
+  /* 1. 팔레트 */
+  var steps = ['0', '50', '100', '200', '300', '400', '500', '600', '700', '800', '900'];
+  var hues = {
+    neutral: steps, indigo: steps.slice(1), violet: ['50', '500', '600', '700'],
+    teal: ['50', '600', '700'], green: ['50', '600', '700'], amber: ['50', '600', '700'], red: ['50', '600', '700']
+  };
+  var pal = document.getElementById('palette');
+  var head = '<div></div>' + steps.map(function (s) { return '<div style="font-size:11px;color:var(--dt-fg-subtle);text-align:center">' + s + '</div>'; }).join('');
+  pal.innerHTML = head;
+  Object.keys(hues).forEach(function (h) {
+    var html = '<div class="name">' + h + '</div>';
+    steps.forEach(function (s) {
+      if (hues[h].indexOf(s) < 0) { html += '<div class="chip empty"></div>'; return; }
+      var hex = v(h + '-' + s).toUpperCase();
+      var fg = lum(hex) > 0.35 ? 'var(--dt-neutral-900)' : '#FFFFFF';
+      html += '<div class="chip" style="background:' + hex + ';color:' + fg + '">' + hex + '</div>';
+    });
+    pal.insertAdjacentHTML('beforeend', html);
+  });
+
+  /* 2. 의미 색 견본 */
+  // [토큰, 원시값 이름, 보여 줄 방식, 대비 대상 bg 토큰, 기준]
+  function swatch(id, list) {
+    var el = document.getElementById(id);
+    list.forEach(function (t) {
+      var token = t[0], ref = t[1], kind = t[2], against = t[3], need = t[4];
+      var hex = token === 'overlay' ? 'rgb(23 26 33 / 0.5)' : hexOf(token);
+      var sample;
+      if (kind === 'bg') sample = '<div class="sample" style="background:var(--dt-' + token + ');color:var(--dt-' + (t[5] || 'fg') + ')">' + (t[6] || '가나다 Aa 123') + '</div>';
+      else if (kind === 'text') sample = '<div class="sample" style="background:var(--dt-' + against + ');color:var(--dt-' + token + ')">가나다 Aa 123</div>';
+      else sample = '<div class="sample" style="background:var(--dt-' + against + ')"><div style="width:70%;height:28px;border:2px solid var(--dt-' + token + ');border-radius:6px;background:var(--dt-surface)"></div></div>';
+      var cr = '';
+      if (against && token !== 'overlay') {
+        var pairFg = kind === 'bg' ? (t[5] || 'fg') : token;
+        var pairBg = kind === 'bg' ? token : against;
+        cr = '<div><span>' + (kind === 'bg' ? '<code>' + pairFg + '</code> 글자' : '<code>' + against + '</code> 위') + '</span>' + crCell(pairFg, pairBg, need) + '</div>';
+      }
+      el.insertAdjacentHTML('beforeend',
+        '<div class="swatch">' + sample + '<div class="meta"><div><span class="tk">' + token + '</span><code>' + hex + '</code></div>' +
+        '<div><span style="color:var(--dt-fg-subtle)">' + ref + '</span></div>' + cr + '</div></div>');
+    });
+  }
+  swatch('sw-surface', [
+    ['canvas', 'neutral-50', 'bg', 'canvas', 4.5, 'fg'],
+    ['surface', 'neutral-0', 'bg', 'surface', 4.5, 'fg'],
+    ['surface-muted', 'neutral-100', 'bg', 'surface-muted', 4.5, 'fg'],
+    ['surface-hover', 'neutral-50', 'bg', 'surface-hover', 4.5, 'fg'],
+    ['surface-selected', 'indigo-50', 'bg', 'surface-selected', 4.5, 'fg'],
+    ['overlay', 'neutral-900 / 50%', 'bg', null, 0, 'fg-on-accent', '모달 가림막']
+  ]);
+  swatch('sw-text', [
+    ['fg', 'neutral-900', 'text', 'surface', 4.5],
+    ['fg-muted', 'neutral-600', 'text', 'surface', 4.5],
+    ['fg-subtle', 'neutral-500', 'text', 'surface', 4.5],
+    ['fg-disabled', 'neutral-400', 'text', 'surface-muted', 0],
+    ['fg-link', 'indigo-600', 'text', 'surface', 4.5],
+    ['fg-on-accent', 'neutral-0', 'text', 'accent', 4.5]
+  ]);
+  swatch('sw-line', [
+    ['line', 'neutral-200', 'line', 'surface', 0],
+    ['line-strong', 'neutral-400', 'line', 'surface', 3],
+    ['focus', 'indigo-500', 'line', 'surface', 3]
+  ]);
+  swatch('sw-action', [
+    ['accent', 'indigo-600', 'bg', 'accent', 4.5, 'fg-on-accent', '체험하기'],
+    ['accent-hover', 'indigo-700', 'bg', 'accent-hover', 4.5, 'fg-on-accent', '체험하기 (hover)'],
+    ['accent-bg', 'indigo-50', 'bg', 'accent-bg', 4.5, 'accent-fg', '보조 버튼'],
+    ['danger', 'red-600', 'bg', 'danger', 4.5, 'fg-on-accent', '초기화'],
+    ['danger-hover', 'red-700', 'bg', 'danger-hover', 4.5, 'fg-on-accent', '초기화 (hover)']
+  ]);
+  swatch('sw-feedback', [
+    ['success-bg', 'green-50 / 글자 green-700', 'bg', 'success-bg', 4.5, 'success-fg', '전환 완료'],
+    ['warning-bg', 'amber-50 / 글자 amber-700', 'bg', 'warning-bg', 4.5, 'warning-fg', '확인이 필요해요'],
+    ['danger-bg', 'red-50 / 글자 red-700', 'bg', 'danger-bg', 4.5, 'danger-fg', '허용되지 않는 단계 이동'],
+    ['info-bg', 'indigo-50 / 글자 indigo-700', 'bg', 'info-bg', 4.5, 'info-fg', '비밀번호는 찾을 수 없어요'],
+    ['success', 'green-600', 'line', 'surface', 3],
+    ['warning', 'amber-600', 'line', 'surface', 3],
+    ['danger', 'red-600', 'line', 'surface', 3],
+    ['info', 'indigo-600', 'line', 'surface', 3]
+  ]);
+
+  /* 3. 도메인 상태 표 */
+  var HEAD = '<tr><th>상태</th><th>토큰</th><th>배지 샘플</th><th>배지 글자 / 배경</th><th>진한 색</th><th>진한 색 / surface</th></tr>';
+  function stateTable(id, rows) {
+    var html = HEAD;
+    rows.forEach(function (r) {
+      var label = r[0], tk = r[1], hasSolid = r[2] !== false;
+      html += '<tr><td>' + label + '</td><td><code>' + tk + '</code></td>' +
+        '<td><span class="badge" style="background:var(--dt-' + tk + '-bg);color:var(--dt-' + tk + '-fg)">' + label + '</span></td>' +
+        '<td><code>' + hexOf(tk + '-fg') + ' / ' + hexOf(tk + '-bg') + '</code><br>' + crCell(tk + '-fg', tk + '-bg', 4.5) + '</td>' +
+        (hasSolid
+          ? '<td><span class="dot" style="background:var(--dt-' + tk + ')"></span><code>' + hexOf(tk) + '</code></td><td>' + crCell(tk, 'surface', 3) + '</td>'
+          : '<td>-</td><td>-</td>') + '</tr>';
+    });
+    document.getElementById(id).innerHTML = html;
+  }
+  stateTable('tb-stage', [['발굴', 'stage-discovery'], ['제안', 'stage-proposal'], ['협상', 'stage-negotiation'], ['수주', 'stage-won'], ['실패', 'stage-lost']]);
+  stateTable('tb-lead', [['신규', 'lead-new'], ['진행 중', 'lead-working'], ['검증됨', 'lead-qualified'], ['전환됨', 'lead-converted'], ['제외', 'lead-excluded']]);
+  stateTable('tb-misc', [['지연', 'overdue'], ['오늘', 'due-today'],['담당자 퇴사', 'owner-left'], ['준비 중', 'coming-soon', false], ['퇴사', 'contact-left', false]]);
+
+  var icons = {
+    call: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>',
+    meeting: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20a6 6 0 0 1 12 0M15 20a4.5 4.5 0 0 1 6-4.2"/></svg>',
+    task: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>'
+  };
+  var act = '<tr><th>종류</th><th>토큰</th><th>아이콘 + 라벨 샘플</th><th>아이콘 / 아이콘 배경</th><th>라벨 글자 / surface</th></tr>';
+  [['통화', 'call'], ['미팅', 'meeting'], ['할 일', 'task']].forEach(function (a) {
+    var tk = 'activity-' + a[1];
+    act += '<tr><td>' + a[0] + '</td><td><code>' + tk + '</code></td>' +
+      '<td><span class="act"><span class="ic" style="background:var(--dt-' + tk + '-bg);color:var(--dt-' + tk + ')">' + icons[a[1]] + '</span><span style="color:var(--dt-' + tk + '-fg)">' + a[0] + '</span></span></td>' +
+      '<td><code>' + hexOf(tk) + ' / ' + hexOf(tk + '-bg') + '</code><br>' + crCell(tk, tk + '-bg', 3) + '</td>' +
+      '<td><code>' + hexOf(tk + '-fg') + '</code><br>' + crCell(tk + '-fg', 'surface', 4.5) + '</td></tr>';
+  });
+  document.getElementById('tb-activity').innerHTML = act;
+  Array.prototype.forEach.call(document.querySelectorAll('[data-icon]'), function (el) { el.innerHTML = icons[el.getAttribute('data-icon')]; });
+
+  /* 머문 기간 (tokens.md 5.2) */
+  function dwell(ms) {
+    var m = Math.floor(ms / 60000);
+    if (m < 1) return '1분 미만';
+    if (m < 60) return m + '분';
+    var h = Math.floor(m / 60);
+    if (h < 24) return h + '시간';
+    return Math.floor(h / 24) + '일';
+  }
+  var dw = [[8e3, '8초', '1분 미만'], [59 * 6e4 + 59e3, '59분 59초', '59분'], [12 * 6e4, '12분', '12분'], [3 * 36e5 + 40 * 6e4, '3시간 40분', '3시간'],
+    [23 * 36e5 + 50 * 6e4, '23시간 50분', '23시간'], [47 * 36e5, '1일 23시간', '1일'], [5 * 864e5 + 2 * 36e5, '5일 2시간', '5일']];
+  var dh = '<tr><th>실제 머문 시간</th><th>기대 표시</th><th>규칙 계산 결과</th><th>타임라인 문구 예</th></tr>';
+  dw.forEach(function (d) {
+    var got = dwell(d[0]), ok = got === d[2];
+    dh += '<tr><td class="tnum">' + d[1] + '</td><td class="tnum" style="font-weight:600">' + d[2] + '</td><td class="tnum ' + (ok ? '' : 'fail') + '">' + got + (ok ? '' : ' (불일치)') + '</td>' +
+      '<td>제안 단계 <span class="tnum">' + got + '</span></td></tr>';
+  });
+  document.getElementById('tb-dwell').innerHTML = dh;
+
+  /* 수주율 (tokens.md 5.3) */
+  function winRate(w, l) {
+    if (w + l === 0) return '—';
+    var p = Math.round(w / (w + l) * 100);
+    if (w > 0 && p < 1) p = 1;
+    if (l > 0 && p > 99) p = 99;
+    return p + '%';
+  }
+  var wr = [[3, 1, '75%'], [2, 1, '67%'], [0, 2, '0%'], [1, 199, '1%'], [199, 1, '99%'], [5, 0, '100%'], [0, 0, '—']];
+  var wh = '<tr><th>수주 · 실패</th><th>기대 표시</th><th>규칙 계산 결과</th></tr>';
+  wr.forEach(function (x) {
+    var got = winRate(x[0], x[1]), ok = got === x[2];
+    wh += '<tr><td class="tnum">' + x[0] + ' · ' + x[1] + '</td><td class="tnum" style="font-weight:600' + (x[2] === '—' ? ';color:var(--dt-unavailable)' : '') + '">' + x[2] + '</td><td class="tnum ' + (ok ? '' : 'fail') + '">' + got + (ok ? '' : ' (불일치)') + '</td></tr>';
+  });
+  document.getElementById('tb-winrate').innerHTML = wh;
+
+  /* 전화번호 (tokens.md 5.4) */
+  function formatPhone(raw) {
+    var d = raw.replace(/\D/g, '');
+    var m;
+    if (!/^\+/.test(raw.trim())) {
+      if ((m = d.match(/^(010)(\d{4})(\d{4})$/)) ||
+          (m = d.match(/^(01[16789])(\d{3,4})(\d{4})$/)) ||
+          (m = d.match(/^(02)(\d{3,4})(\d{4})$/)) ||
+          (m = d.match(/^(0[3-6]\d|070)(\d{3,4})(\d{4})$/))) {
+        return m[1] + '-' + m[2] + '-' + m[3];
+      }
+      if ((m = d.match(/^(1[568]\d{2})(\d{4})$/))) return m[1] + '-' + m[2];
+    }
+    return raw;
+  }
+  var ph = [['01012345678', '휴대전화', '010-1234-5678'], ['010 1234 5678', '휴대전화 (공백으로 저장)', '010-1234-5678'],
+    ['0111235678', '휴대전화 (옛 식별번호)', '011-123-5678'], ['021235678', '서울 (3자리 국번)', '02-123-5678'],
+    ['0212345678', '서울 (4자리 국번)', '02-1234-5678'], ['0311235678', '지역번호', '031-123-5678'],
+    ['07012345678', '인터넷전화', '070-1234-5678'], ['15881234', '대표번호', '1588-1234'],
+    ['+82 10 1234 5678', '판별 불가 (그대로)', '+82 10 1234 5678']];
+  var phh = '<tr><th>종류</th><th>저장 값</th><th>기대 표시</th><th>규칙 계산 결과</th></tr>';
+  ph.forEach(function (p) {
+    var got = formatPhone(p[0]), ok = got === p[2];
+    phh += '<tr><td>' + p[1] + '</td><td class="tnum" style="color:var(--dt-fg-subtle)">' + p[0] + '</td><td class="tnum" style="font-weight:600">' + p[2] + '</td>' +
+      '<td class="tnum ' + (ok ? '' : 'fail') + '">' + got + (ok ? '' : ' (불일치)') + '</td></tr>';
+  });
+  document.getElementById('tb-phone').innerHTML = phh;
+
+  document.getElementById('remain-cr').innerHTML =
+    '대비: <code>fg-muted</code>/surface ' + crCell('fg-muted', 'surface', 4.5) +
+    ' · <code>warning-fg</code>/surface ' + crCell('warning-fg', 'surface', 4.5) +
+    ' · <code>warning-fg</code>/canvas ' + crCell('warning-fg', 'canvas', 4.5) +
+    ' · 아이콘 <code>warning</code>/canvas ' + crCell('warning', 'canvas', 3);
+
+  /* 4. 타이포그래피 */
+  var types = [
+    ['text-xs', 12, 1.5, 0, '배지 · 표 메타 · 차트 축: 예상 마감일 11월 12일'],
+    ['text-sm', 14, 1.5, 0, '기본 본문: 대양정밀 - 프레스 라인 베어링 연간 공급'],
+    ['text-base', 16, 1.5, 0, '입력란 · 소개 문단: 개인정보 없이 바로 써 보는 영업 CRM'],
+    ['text-lg', 18, 1.45, -0.01, '섹션 제목: 단계 이력'],
+    ['text-xl', 20, 1.4, -0.01, '화면 제목: 파이프라인'],
+    ['text-2xl', 24, 1.35, -0.02, '요약 수치: 3억 6,500만 원'],
+    ['text-3xl', 30, 1.3, -0.02, '핵심 수치: 수주율 75%']
+  ];
+  document.getElementById('type-samples').innerHTML = types.map(function (t) {
+    return '<div style="display:flex;gap:16px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--dt-line)">' +
+      '<code style="width:150px;flex:none;color:var(--dt-fg-subtle)">' + t[0] + ' ' + t[1] + '/' + t[2] + (t[3] ? ' ' + t[3] + 'em' : '') + '</code>' +
+      '<span class="tnum" style="font-size:' + t[1] + 'px;line-height:' + t[2] + ';letter-spacing:' + t[3] + 'em">' + t[4] + '</span></div>';
+  }).join('');
+
+  /* 5. 금액 형식 (tokens.md 5.1) */
+  function groupFmt(n) { return n.toLocaleString('ko-KR'); }
+  function formatKRW(n) {
+    if (n === 0) return '0원';
+    var units = [['조', 1e12], ['억', 1e8], ['만', 1e4]];
+    var parts = [], rest = n;
+    units.forEach(function (u) {
+      var q = Math.floor(rest / u[1]);
+      if (q > 0) parts.push(groupFmt(q) + u[0]);
+      rest = rest % u[1];
+    });
+    if (rest > 0) parts.push(groupFmt(rest) + '원');
+    else parts[parts.length - 1] += ' 원';
+    return parts.join(' ');
+  }
+  var money = [[0, '0원'], [5500, '5,500원'], [3000000, '300만 원'], [50000000, '5,000만 원'],
+    [123456789, '1억 2,345만 6,789원'], [500000000, '5억 원'], [1230000000, '12억 3,000만 원']];
+  var mh = '<tr><th>값 (원)</th><th>기대 표시 (tokens.md)</th><th>규칙 계산 결과</th><th>"50,000,000원" 형식 (비교)</th></tr>';
+  money.forEach(function (m) {
+    var got = formatKRW(m[0]);
+    var ok = got === m[1];
+    mh += '<tr><td class="tnum">' + groupFmt(m[0]) + '</td><td class="tnum" style="font-weight:600">' + m[1] + '</td>' +
+      '<td class="tnum ' + (ok ? '' : 'fail') + '">' + got + (ok ? '' : ' (불일치)') + '</td>' +
+      '<td class="tnum" style="color:var(--dt-fg-subtle)">' + groupFmt(m[0]) + '원</td></tr>';
+  });
+  document.getElementById('tb-money').innerHTML = mh;
+
+  var amt = document.getElementById('amt'), read = document.getElementById('amt-read');
+  function upd() {
+    var digits = amt.value.replace(/[^\d]/g, '');
+    var n = digits ? Number(digits) : 0;
+    amt.value = digits ? groupFmt(n) : '';
+    read.textContent = digits ? formatKRW(n) : '';
+  }
+  amt.addEventListener('input', upd); upd();
+
+  /* 6. 간격·라운드·그림자 */
+  document.getElementById('spacing').innerHTML = [[0.5, 2], [1, 4], [2, 8], [3, 12], [4, 16], [6, 24], [8, 32], [12, 48]].map(function (s) {
+    return '<div class="space-row"><span class="lbl"><code>' + s[0] + '</code> · ' + s[1] + 'px</span><span class="bar" style="width:' + s[1] + 'px"></span></div>';
+  }).join('');
+  document.getElementById('radius').innerHTML = [['rounded-sm', '4px', '배지, 체크박스'], ['rounded-md', '6px', '버튼, 입력란'], ['rounded-lg', '8px', '카드, 칸반 카드'], ['rounded-xl', '12px', '모달, 팝오버'], ['rounded-full', '9999px', '아이콘 배경, 점']].map(function (r) {
+    return '<div class="box" style="border-radius:' + r[1] + '"><div><code>' + r[0] + '</code><br>' + r[1] + '<br>' + r[2] + '</div></div>';
+  }).join('');
+  document.getElementById('shadow').innerHTML = [['shadow-xs', '카드 평상시'], ['shadow-sm', '카드 hover'], ['shadow-md', '드롭다운, 끌고 있는 카드'], ['shadow-lg', '모달']].map(function (s) {
+    return '<div class="shadow-box" style="box-shadow:var(--dt-' + s[0] + ')"><div><code>' + s[0] + '</code><br>' + s[1] + '</div></div>';
+  }).join('');
+
+  /* 글꼴 상태 */
+  /* 설치된 글꼴인지: 대체 글꼴과 글자 폭이 다르면 Pretendard가 쓰인 것이다 */
+  var cv = document.createElement('canvas').getContext('2d');
+  var probeText = '영업 파이프라인 Opportunity 1234567890';
+  cv.font = '20px monospace'; var w0 = cv.measureText(probeText).width;
+  cv.font = '20px "Pretendard Variable", Pretendard, monospace'; var w1 = cv.measureText(probeText).width;
+  var fs = document.getElementById('font-status');
+  fs.textContent = w0 !== w1
+    ? '글꼴: 이 기기에 Pretendard가 설치되어 있어 실제 글꼴로 보인다.'
+    : '글꼴: 이 기기에 Pretendard가 없어 대체 글꼴(Apple SD Gothic Neo / Malgun Gothic)로 보인다. 외부 파일을 불러오지 않는 페이지라 실제 서비스와 글자 모양이 조금 다를 수 있다.';
+})();
+</script>
+</body>
+</html>
