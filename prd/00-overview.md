@@ -54,15 +54,15 @@ HANDOFF 0장의 정의를 그대로 쓰고, PRD에서 쓰는 보조 용어를 �
 | **예시 데이터 (Seed)** | 작업 공간 생성 시 업종에 맞춰 미리 넣어 두는 Lead·Account·Contact·Opportunity·Activity |
 | **Lead** | 아직 검증되지 않은 잠재 고객. 회사명·담당자명·연락처 정도의 정보 |
 | **검증 (Qualify)** | Lead가 영업 가치가 있다고 표시하는 행위. Lead 상태는 신규·진행 중·검증됨·전환됨·제외 (`02-lead.md` §3.2) |
-| **전환 (Convert)** | 검증된 Lead로부터 Account + Contact + Opportunity를 한 번에 만드는 행위. Account는 새로 만들거나 같은 작업 공간의 기존 Account를 선택할 수 있고, Contact·Opportunity는 항상 새로 만든다. 전환 후 Lead는 더 이상 수정하지 않는다 |
+| **전환 (Convert)** | 검증된 Lead로부터 Account + Contact + Opportunity를 한 번에 만드는 행위. Account는 새로 만들거나 같은 작업 공간의 기존 Account를 선택할 수 있고, Contact·Opportunity는 항상 새로 만든다. Lead에 붙어 있던 Activity는 새 Contact로 옮겨진다. 전환 후 Lead는 더 이상 수정하지 않는다 |
 | **Account** | 거래 대상 회사 |
-| **Contact** | Account에 속한 담당자 |
+| **Contact** | Account에 속한 담당자. 소속 Account는 생성 후 바뀌지 않는다(이직은 새 Contact로 표현). 상태 "재직 중" / "퇴사"를 가진다 (`03-account-contact.md` `AC-CT-04` `AC-CT-08`) |
 | **Opportunity** | 진행 중인 영업 건. 금액, 단계, 예상 마감일을 가진다 |
 | **단계 (Stage)** | Opportunity의 진행 상태. 열린 단계 발굴 → 제안 → 협상과 종료 단계 수주·실패로 나뉜다. 허용 전이는 `04-opportunity-pipeline.md` §3.2 |
 | **단계 이력 (Stage History)** | Opportunity의 단계가 바뀔 때마다 남는 기록 (이전 단계, 새 단계, 시각) |
-| **Activity** | 통화·미팅·할 일 기록. 어떤 대상에 붙는지는 TBD-8 |
+| **Activity** | 통화·미팅·할 일 기록. Lead·Account·Contact·Opportunity 중 정확히 하나에 붙는다. Lead 전환 시 Lead의 활동은 전환으로 만들어진 Contact로 옮겨진다 (`05-activity.md` `AC-AT-13`) |
 | **파이프라인** | 열린 Opportunity를 단계별로 나열한 칸반 뷰 |
-| **수주율 (Win Rate)** | 종료된 Opportunity 중 수주 비율. 계산 기준은 TBD-4 |
+| **수주율 (Win Rate)** | 종료된(수주·실패) Opportunity 중 수주의 비율. 수주 건수 ÷ (수주 건수 + 실패 건수). 건수 기준이며 열린 건은 포함하지 않는다 (`06-dashboard.md` `AC-DB-03`) |
 
 ### 4.1 업종 목록 (고정)
 
@@ -145,7 +145,7 @@ Workspace 1 ─── * Lead
           1 ─── * Opportunity * ─── 1 Account
                               * ─── 0..1 Contact (주 담당자)
                               1 ─── * StageHistory
-          1 ─── * Activity ─── 대상(TBD-8)
+          1 ─── * Activity * ─── 1 대상 (Lead | Account | Contact | Opportunity 중 하나)
 Lead(전환됨) ─── 1 Account(새로 만든 것 또는 선택한 기존 것), 1 Contact, 1 Opportunity (전환으로 연결·생성된 것)
 ```
 
@@ -161,4 +161,4 @@ Lead(전환됨) ─── 1 Account(새로 만든 것 또는 선택한 기존 �
 
 ## 9. 결정 필요 항목
 
-이 문서에서 참조한 TBD: TBD-4, TBD-8. 전체 목록과 후보는 [`99-decisions-tbd.md`](./99-decisions-tbd.md).
+이 문서가 참조하는 미결정 TBD는 없다. 결정된 항목의 요약과 반영 위치는 [`99-decisions-tbd.md`](./99-decisions-tbd.md).

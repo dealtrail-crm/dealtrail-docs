@@ -6,7 +6,7 @@
 | 우선순위 | `priority:high` |
 | 관련 설명 포인트 | Opportunity 단계 전이: 허용된 단계로만 이동하는 상태 머신 + 변경 이력 |
 | 선행 | 01 체험 작업 공간, 03 Account (Opportunity는 Account 필수) |
-| TBD | TBD-8 상세 화면의 활동 목록 (`AC-OP-06`) |
+| TBD | 없음 |
 
 ## 1. 목적
 
@@ -28,9 +28,9 @@ Opportunity는 금액·단계·예상 마감일을 가진 영업 건이다. 단�
 - [ ] `AC-OP-01` [공통] Opportunity는 다음 정보를 가진다: 이름(필수), 소속 Account(필수), 주 담당자 Contact(선택, 그 Account 소속이어야 함), 금액(필수, 0 이상 정수, 통화는 KRW(원) 하나로 고정 `AC-COMMON-06`), 예상 마감일(필수), 단계(필수, 3.2의 다섯 단계 중 하나), 메모, 생성 시각, 종료 시각(수주·실패로 바뀐 시각, 열린 건은 비어 있음).
 - [ ] `AC-OP-02` [공통] Opportunity를 직접 생성·수정할 수 있다. 생성 시 단계는 첫 번째 열린 단계 "발굴"로 고정되며, 다른 단계로 생성할 수 없다. (예시 데이터 적재는 예외. 적재된 Opportunity도 이력은 `AC-OP-11` 규칙대로 남긴다)
 - [ ] `AC-OP-03` [BE] 금액이 음수이거나 정수가 아니거나, 예상 마감일이 날짜가 아니면 거부된다. 과거 날짜는 허용한다 (예시 데이터·지연 건 표현을 위해).
-- [ ] `AC-OP-04` [BE] 주 담당자 Contact가 소속 Account의 Contact가 아니면 생성·수정이 거부된다. (03의 `AC-CT-04`로 사후에 달라지는 경우는 허용)
-- [ ] `AC-OP-05` [공통] 열린 Opportunity는 삭제할 수 있다. 종료된(수주·실패) Opportunity는 삭제할 수 없다. 삭제하면 단계 이력도 함께 사라진다.
-- [ ] `AC-OP-06` [FE] Opportunity 상세는 기본 정보, 단계 변경 UI, 단계 이력(최신순), 활동 목록(TBD-8)을 보여 준다.
+- [ ] `AC-OP-04` [BE] 주 담당자 Contact가 소속 Account의 Contact가 아니면 생성·수정이 거부된다. Contact의 소속 Account는 바뀌지 않으므로(`03-account-contact.md` `AC-CT-04`) 주 담당자는 항상 그 Opportunity의 Account 소속이다. 퇴사 Contact의 지정 규칙은 `AC-OP-24`.
+- [ ] `AC-OP-05` [공통] 열린 Opportunity는 삭제할 수 있다. 종료된(수주·실패) Opportunity는 삭제할 수 없다. 삭제하면 단계 이력과 거기 붙은 활동도 함께 사라진다(`05-activity.md` `AC-AT-05`).
+- [ ] `AC-OP-06` [FE] Opportunity 상세는 기본 정보, 단계 변경 UI, 단계 이력(최신순), 그 Opportunity에 직접 붙은 활동 목록을 보여 주고 그 자리에서 활동을 추가할 수 있다(`05-activity.md` `AC-AT-07`). 활동과 단계 이력을 합친 타임라인은 `AC-AT-08`을 따른다. 종료된 Opportunity에도 활동을 추가할 수 있다(`AC-AT-06`).
 
 ### 3.2 단계 상태 머신
 
@@ -72,6 +72,11 @@ Opportunity는 금액·단계·예상 마감일을 가진 영업 건이다. 단�
 - [ ] `AC-OP-22` [BE] `AC-COMMON-01~05`를 만족한다. 특히 다른 작업 공간의 Opportunity에 단계 변경을 요청하면 "존재하지 않음"으로 거부된다 (`AC-WS-26`).
 - [ ] `AC-OP-23` [BE] 작업 공간당 Opportunity 200건(`01-trial-workspace.md` `AC-WS-37`)을 넘는 생성은 거부된다.
 
+### 3.5 주 담당자와 퇴사 Contact
+
+- [ ] `AC-OP-24` [BE] 상태가 "퇴사"인 Contact(`03-account-contact.md` `AC-CT-08`)를 주 담당자로 **새로 지정**하는 생성·수정 요청은 거부되고, 거부 사유에 "퇴사한 Contact"가 포함된다. 이미 주 담당자로 지정된 Contact가 퇴사로 바뀌어도 Opportunity는 변하지 않는다: 주 담당자가 그대로 유지되고, 자동 해제·자동 교체·이력 추가는 없다. 주 담당자를 바꾸지 않는 수정(금액·마감일 등)은 주 담당자가 퇴사 Contact여도 허용된다.
+- [ ] `AC-OP-25` [FE] 열린 Opportunity의 주 담당자가 퇴사 Contact이면 Opportunity 목록(칸반 카드)과 상세에 "담당자 퇴사" 표시가 보인다. 방문자는 Opportunity 수정으로 같은 Account의 다른 재직 중 Contact로 직접 교체한다(교체 선택지에 퇴사 Contact는 나오지 않는다). 종료된(수주·실패) Opportunity는 기록이므로 이 표시를 두지 않고 그대로 둔다(`AC-OP-09` 잠금). 표시 방식은 designer가 정한다.
+
 ## 4. 제외 범위
 
 - 단계별 확률(가중 파이프라인), 예상 수익 계산
@@ -79,6 +84,7 @@ Opportunity는 금액·단계·예상 마감일을 가진 영업 건이다. 단�
 - 종료된 건 재오픈
 - Opportunity 제품 라인(품목·수량), 견적
 - 담당자 배정, 팀 파이프라인
+- 주 담당자 Contact 퇴사 시 자동 해제·자동 교체, 퇴사 Contact의 Opportunity 일괄 이관 (`AC-OP-24`)
 - 칸반 열 커스터마이징, 저장된 필터
 - 이력 되돌리기
 
@@ -88,3 +94,4 @@ Opportunity는 금액·단계·예상 마감일을 가진 영업 건이다. 단�
 - 금액의 화면 표시 형식("5,000만 원" / "50,000,000원" 등)은 designer가 정한다.
 - 드래그 앤 드롭 채택 여부는 designer·frontend가 판단한다. PRD는 메뉴 방식을 필수로만 둔다.
 - `AC-OP-09`의 "종료 후 메모 수정 허용"은 API 계약에서 결정한다.
+- `AC-OP-25`의 "담당자 퇴사" 표시를 위해 Opportunity 조회(칸반·상세) 응답에 주 담당자의 상태를 포함하는 방식은 API 계약에서 정한다.
